@@ -19,4 +19,5 @@ A dashboard per pipeline and branch allows to see at one glance the status of th
 
 ---
 (1) Probably a temporary name for this project... The idea came after a discussion - maybe an explanation could come later.
+
 (2) Job, view - I do not know yet what form this would take.
