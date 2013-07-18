@@ -7,7 +7,7 @@ My feeling is that the idea of a pipeline should be central to the continuous in
 
 The idea behind `jenkins-panda` (1) is to be able to support pipelines in Jenkins as an (almost) first-class citizen.
 
-One would define a `pipeline` in Jenkins as a particular class of job (2), with a given set of parameters. It would be associated with `stages` that are run in sequence, automatically, manually or conditionally (using triggers).
+One would define a `pipeline` in Jenkins as a particular class of job, with a given set of parameters. It would be associated with `stages` that are run in sequence, automatically, manually or conditionally (using triggers).
 
 Stages are groups of jobs (in the regular Jenkins sense) that are either run in parallel or in sequence. Each job accepts a subset of the parameters defined by the pipeline.
 
@@ -19,5 +19,3 @@ A dashboard per pipeline and branch allows to see at one glance the status of th
 
 ---
 (1) Probably a temporary name for this project... The idea came after a discussion - maybe an explanation could come later.
-
-(2) Job, view - I do not know yet what form this would take.
