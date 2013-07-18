@@ -4,6 +4,7 @@
     <l:side-panel>
         <l:tasks>
             <l:task icon="images/24x24/edit-delete.png" href="delete" title="${%Delete project}" permission="${it.DELETE}" />
+            <l:task icon="images/24x24/setting.png" href="configure" title="${%Configure}" permission="${it.CONFIGURE}" />
             <t:actions />
         </l:tasks>
     </l:side-panel>
