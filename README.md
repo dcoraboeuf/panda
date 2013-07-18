@@ -1,7 +1,7 @@
 jenkins-panda
 =============
 
-In Jenkins, one deals with jobs, their parameters, their orchestration, their duplication between branches (using templating or not), the duplication of their orchestration, etc. In the Jenkins core, not much of this is available. One would need to install plug-ins, update ones or even create some from scratch.
+In Jenkins, one deals with jobs, their parameters, their orchestration, their duplication between branches (using templating or not), the duplication of their orchestration, etc. In the Jenkins core, not much of this is available. One would need to install plug-ins, update ones or even create some from scratch. And then make them work together.
 
 My feeling is that the idea of a pipeline should be central to the continuous integration.
 
