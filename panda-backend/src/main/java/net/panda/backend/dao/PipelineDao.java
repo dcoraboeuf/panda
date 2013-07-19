@@ -11,5 +11,7 @@ public interface PipelineDao {
 
     TPipeline getById(int id);
 
+    TPipeline getByName(String name);
+
     int create(String name, String description);
 }

@@ -8,6 +8,8 @@ public interface SQL {
 
     String PIPELINE_BY_ID = "SELECT * FROM PIPELINE WHERE ID = :id";
 
+    String PIPELINE_BY_NAME = "SELECT * FROM PIPELINE WHERE NAME = :name";
+
     String PIPELINE_CREATE = "INSERT INTO PIPELINE (NAME, DESCRIPTION) VALUES (:name, :description)";
 
     // Configuration

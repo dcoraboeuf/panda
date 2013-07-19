@@ -4,11 +4,13 @@ import net.panda.backend.config.Caches;
 import net.panda.backend.dao.PipelineDao;
 import net.panda.backend.dao.model.TPipeline;
 import net.panda.backend.exceptions.PipelineAlreadyExistException;
+import net.panda.backend.exceptions.PipelineNameNotFoundException;
 import net.panda.dao.AbstractJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,13 +51,27 @@ public class PipelineJdbcDao extends AbstractJdbcDao implements PipelineDao {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(Caches.PIPELINE)
+    @Cacheable(Caches.PIPELINE_ID)
     public TPipeline getById(int id) {
         return getNamedParameterJdbcTemplate().queryForObject(
                 SQL.PIPELINE_BY_ID,
                 params("id", id),
                 pipelineRowMapper
         );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TPipeline getByName(String name) {
+        try {
+        return getNamedParameterJdbcTemplate().queryForObject(
+                SQL.PIPELINE_BY_NAME,
+                params("name", name),
+                pipelineRowMapper
+        );
+        } catch (EmptyResultDataAccessException ex) {
+            throw new PipelineNameNotFoundException(name);
+        }
     }
 
     @Override

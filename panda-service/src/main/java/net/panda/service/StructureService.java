@@ -12,4 +12,6 @@ public interface StructureService {
     PipelineSummary getPipeline(int id);
 
     PipelineSummary createPipeline(PipelineCreationForm form);
+
+    PipelineSummary getPipelineByName(String name);
 }

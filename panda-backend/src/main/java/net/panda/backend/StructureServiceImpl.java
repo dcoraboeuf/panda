@@ -51,6 +51,12 @@ public class StructureServiceImpl implements StructureService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public PipelineSummary getPipelineByName(String name) {
+        return pipelineSummaryFunction.apply(pipelineDao.getByName(name));
+    }
+
+    @Override
     @Transactional
     @Secured(SecurityRoles.ADMINISTRATOR)
     public PipelineSummary createPipeline(PipelineCreationForm form) {

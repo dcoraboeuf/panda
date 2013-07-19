@@ -9,3 +9,7 @@ net.panda.backend.exceptions.ConfigurationKeyMissingException
 net.panda.backend.exceptions.PipelineAlreadyExistException
     en -> [E-003] Pipeline "{0}" already exists.
     fr -> [E-003] Le pipeline "{0}" existe déjà.
+
+net.panda.backend.exceptions.PipelineNameNotFoundException
+    en -> [E-004] Cannot find pipeline with name "{0}".
+    fr -> [E-004] Impossible de trouver le pipeline de nom "{0}".

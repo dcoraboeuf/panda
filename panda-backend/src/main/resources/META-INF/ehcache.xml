@@ -38,7 +38,14 @@
            timeToLiveSeconds="3600"
            statistics="true"
            overflowToDisk="false" />
-    <cache name="Pipeline"
+    <cache name="PipelineID"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
+           statistics="true"
+           overflowToDisk="false" />
+    <cache name="PipelineName"
            maxElementsInMemory="10"
            eternal="false"
            timeToIdleSeconds="3600"

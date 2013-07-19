@@ -3,6 +3,7 @@ package net.panda.web.controller;
 import net.panda.core.UserMessage;
 import net.panda.core.security.SecurityUtils;
 import net.panda.service.AdminService;
+import net.panda.service.StructureService;
 import net.panda.service.model.GeneralConfiguration;
 import net.panda.service.model.LDAPConfiguration;
 import net.panda.service.model.MailConfiguration;
@@ -22,12 +23,14 @@ public class GUIController extends AbstractGUIController {
 
     private final SecurityUtils securityUtils;
     private final AdminService adminService;
+    private final StructureService structureService;
 
     @Autowired
-    public GUIController(ErrorHandler errorHandler, SecurityUtils securityUtils, AdminService adminService) {
+    public GUIController(ErrorHandler errorHandler, SecurityUtils securityUtils, AdminService adminService, StructureService structureService) {
         super(errorHandler);
         this.securityUtils = securityUtils;
         this.adminService = adminService;
+        this.structureService = structureService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -91,10 +94,12 @@ public class GUIController extends AbstractGUIController {
         return new RedirectView("/settings", true);
     }
 
+    /**
+     * Pipeline page
+     */
     @RequestMapping(value = "/pipeline/{name:[a-zA-Z0-9_\\.]+}", method = RequestMethod.GET)
     public ModelAndView pipelineGet(@PathVariable String name) {
-        // FIXME Pipeline page
-        return new ModelAndView("pipeline");
+        return new ModelAndView("pipeline", "pipeline", structureService.getPipelineByName(name));
     }
 
 }
