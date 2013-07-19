@@ -3,7 +3,7 @@
          xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
     <!-- Main branch -->
-    <f:section title="${%Main branch}">
+    <f:section title="${%Main branch}" name="mainBranch">
         <st:include page="config.jelly" it="${it.mainBranch}" />
     </f:section>
 
@@ -13,7 +13,7 @@
             <f:repeatable var="branch" name="branches" items="${instance.branches}" add="${%Add branch}">
                 <table width="100%">
                     <f:entry>
-                        <st:include page="config.jelly" class="org.jenkins.plugin.panda.PandaBranch" />
+                        <st:include page="config.jelly" it="${branch}" class="org.jenkins.plugin.panda.PandaBranch" />
                     </f:entry>
                     <f:entry>
                         <div align="right">
