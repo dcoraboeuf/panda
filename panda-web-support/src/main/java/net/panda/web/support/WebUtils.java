@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 public class WebUtils {
 
-    public static final String ONTRACK_URL = "ontrack.url";
+    public static final String PANDA_URL = "panda.url";
 
     public static byte[] readBytes(String resourcePath) {
         InputStream in = WebUtils.class.getResourceAsStream(resourcePath);
@@ -31,7 +31,7 @@ public class WebUtils {
     }
 
     public static String getBaseURL(HttpServletRequest request) {
-        String systemDefinedURL = System.getProperty(ONTRACK_URL);
+        String systemDefinedURL = System.getProperty(PANDA_URL);
         if (StringUtils.isNotBlank(systemDefinedURL)) {
             return systemDefinedURL;
         } else {

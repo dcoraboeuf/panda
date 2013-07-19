@@ -2,7 +2,7 @@
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
 
-	<New id="ontrackDataSource" class="org.eclipse.jetty.plus.jndi.Resource">
+	<New id="pandaDataSource" class="org.eclipse.jetty.plus.jndi.Resource">
         <Arg>java:comp/env/jdbc/panda</Arg>
 		<Arg>
             <New class="org.apache.commons.dbcp.BasicDataSource">

@@ -1,7 +1,7 @@
 define(['jquery', 'jquery-ui'], function ($) {
 
     // DateTime UI
-    $.widget( 'ontrack.datetime', {
+    $.widget( 'panda.datetime', {
         // Default options
         options: {
             dateTime: new Date(),

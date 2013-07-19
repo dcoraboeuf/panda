@@ -51,8 +51,8 @@ general.error.technical
 	fr -> Erreur technique
 
 general.error.contact
-	en -> Please report the following message and identifier to the ontrack administrator.
-	fr -> Veuillez signaler le message et l'identifiant qui suivent à l'administrateur d'ontrack.
+	en -> Please report the following message and identifier to the Panda administrator.
+	fr -> Veuillez signaler le message et l'identifiant qui suivent à l'administrateur de Panda.
 
 general.error.full
 	en -> ...
