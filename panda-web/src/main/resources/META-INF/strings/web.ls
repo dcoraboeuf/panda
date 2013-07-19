@@ -87,6 +87,24 @@ error.back
 	en -> Go back to the portal
 	fr -> Revenir à l'acceuil
 
+[login]
+
+login
+    en -> Sign in
+    fr -> Se connecter
+
+login.user
+    en -> User
+    fr -> Utilisateur
+
+login.password
+    en -> Password
+    fr -> Mot de passe
+
+logout
+    en -> Sign out
+    fr -> Se déconnecter
+
 [home]
 
 home

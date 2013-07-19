@@ -1,8 +1,9 @@
 package net.panda.web.config;
 
+import net.panda.core.security.SecurityUtils;
 import net.panda.web.locale.LocaleInterceptor;
 import net.panda.web.support.WebInterceptor;
-import net.panda.web.support.fm.FnLoc;
+import net.panda.web.support.fm.*;
 import net.sf.jstring.Strings;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private Strings strings;
     @Autowired
     private ObjectMapper jacksonObjectMapper;
+    @Autowired
+    private SecurityUtils securityUtils;
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -86,7 +89,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         */
         // Freemarker variables
         Map<String, Object> variables = new HashMap<>();
+        // - localization
         variables.put("loc", new FnLoc(strings));
+        // - security
+        variables.put("secLogged", new FnSecLogged(securityUtils));
+        variables.put("secAccountId", new FnSecAccountId(securityUtils));
+        variables.put("secAdmin", new FnSecAdmin(securityUtils));
+        variables.put("secDisplayName", new FnSecDisplayName(securityUtils));
         // OK
         c.setFreemarkerVariables(variables);
         // OK

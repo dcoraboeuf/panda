@@ -1,5 +1,5 @@
 <#include "/lib/common.html" >
-<#include "/lib/i18n.html" >
+<#include "/lib/user.html" >
 
 <#macro layout_title page title="">
 	<#if title == "">
@@ -86,7 +86,7 @@
             </script>
 
             <!-- Localization script -->
-            <!-- TODO Lnaguage -->
+            <!-- TODO Language -->
             <script src="localization/en/<@lh key='app.version'/>" type="text/javascript"></script>
 
 			<#list modules as module>
@@ -102,7 +102,7 @@
 	</html>
 </#macro>
 
-<#macro layout_basic page extension=false style=false noscript=false scripts=[] modules=[] title="" showSecurity=true showLanguage=true showVersion=true>
+<#macro layout_basic page extension=false style=false noscript=false scripts=[] modules=[] title="" showUser=true showLanguage=true showVersion=true>
 	<@layout_root page=page extension=extension style=style noscript=noscript scripts=scripts modules=modules title=title>
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
@@ -113,8 +113,8 @@
                     </a>
 					<ul class="nav pull-right">
                         <!-- TODO Search? -->
-						<#if showSecurity>
-                            <!-- TODO Security -->
+						<#if showUser>
+                            <@user />
 						</#if>
 						<#if showLanguage>
                             <!-- TODO Languages -->
@@ -132,8 +132,8 @@
 	</@layout_root>
 </#macro>
 
-<#macro layout_std page extension=false style=false noscript=false scripts=[] modules=[] title="" showSecurity=true breadcrumbs = {}>
-	<@layout_basic page=page extension=extension style=style noscript=noscript scripts=scripts modules=modules title=title showSecurity=showSecurity>
+<#macro layout_std page extension=false style=false noscript=false scripts=[] modules=[] title="" showUser=true breadcrumbs = {}>
+	<@layout_basic page=page extension=extension style=style noscript=noscript scripts=scripts modules=modules title=title showUser=showUser>
 		<ul class="breadcrumb">
 			<#list breadcrumbs?keys as key>
 				<#assign link = breadcrumbs[key]>

@@ -1,7 +1,16 @@
+/* ===== Bootstrap custom ===== */
+
 /* General width for the container */
 .container {
     width: 85%;
 }
+
+.navbar-text {
+    padding: 0px !important;
+    margin-left: 1em;
+}
+
+/* ===== Application ===== */
 
 /* Pointer */
 .action {
