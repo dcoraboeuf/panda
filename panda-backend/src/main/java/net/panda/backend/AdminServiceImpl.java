@@ -100,11 +100,12 @@ public class AdminServiceImpl implements AdminService {
             @CacheEvict(value = Caches.LDAP, key = "'0'")
     })
     public void saveLDAPConfiguration(LDAPConfiguration configuration) {
-        // Validation
-        validatorService.validate(configuration, LDAPConfigurationValidation.class);
         // Saving...
         configurationService.set(ConfigurationKey.LDAP_ENABLED, configuration.isEnabled());
         if (configuration.isEnabled()) {
+            // Validation
+            validatorService.validate(configuration, LDAPConfigurationValidation.class);
+            // OK
             configurationService.set(ConfigurationKey.LDAP_HOST, configuration.getHost());
             configurationService.set(ConfigurationKey.LDAP_PORT, configuration.getPort());
             configurationService.set(ConfigurationKey.LDAP_SEARCH_BASE, configuration.getSearchBase());
