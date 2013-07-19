@@ -7,6 +7,6 @@ public interface Caches {
     String ACCOUNT = "Account";
     String CONFIGURATION_KEY = "ConfigurationKey";
     String CONFIGURATION = "Configuration";
-    String LDAP = "Ldap";
+    String LDAP = "LDAP";
     String MAIL = "Mail";
 }
