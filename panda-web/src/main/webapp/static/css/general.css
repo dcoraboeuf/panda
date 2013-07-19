@@ -1,0 +1,25 @@
+/* General width for the container */
+.container {
+    width: 85%;
+}
+
+/* Pointer */
+.action {
+    cursor: pointer;
+}
+
+/* Hidden */
+.hidden {
+    display: none;
+}
+
+/* Alert (none) */
+.alert-none {
+    display: none;
+}
+
+/* Description test */
+.description {
+    font-style: italic;
+    color: #AAAAAA;
+}

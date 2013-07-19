@@ -1,4 +1,17 @@
 <#include "/lib/layout.html">
 
 <@layout_std page="home" noscript=true>
+
+    <div class="row-fluid">
+        <div class="span4">
+            <@section title=loc('pipeline.list')>
+                <div
+                    id="pipeline-list"
+                    class="dynamic"
+                    dynamic-controller="pipeline-list"
+                    ></div>
+            </@section>
+        </div>
+    </div>
+
 </@layout_std>

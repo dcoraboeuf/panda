@@ -1,6 +1,6 @@
 define(function () {
 
-    var logging = false;
+    var logging = true;
 
     String.prototype.format = function () {
         var args = arguments;

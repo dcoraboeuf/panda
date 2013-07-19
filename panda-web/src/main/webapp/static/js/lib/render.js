@@ -4,6 +4,16 @@ define(['common', 'handlebars'], function (common, handlebars) {
         return key.loc();
     });
 
+    Handlebars.registerHelper('link', function (rel, options) {
+        for (var i = 0; i < this.links.length; i++) {
+            if (rel == this.links[i].rel) {
+                return this.links[i].href;
+            }
+        }
+        common.log('render')('"{0}" rel not found', rel);
+        return '';
+    });
+
     function withTemplate(templateId, templateFn) {
         require(['text!template/' + templateId + '.html'], function (rawTemplate) {
             templateFn(Handlebars.compile(rawTemplate));
@@ -122,7 +132,7 @@ define(['common', 'handlebars'], function (common, handlebars) {
         }
     }
 
-    function sameDataFn (data, config) {
+    function sameDataFn(data, config) {
         return data;
     }
 
