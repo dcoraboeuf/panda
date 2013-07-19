@@ -5,17 +5,30 @@ import hudson.model.ItemGroup;
 import hudson.model.Job;
 import hudson.model.TopLevelItem;
 import hudson.model.TopLevelItemDescriptor;
+import org.kohsuke.stapler.DataBoundConstructor;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class PandaProject extends Job<PandaProject, PandaRun> implements TopLevelItem {
 
+    /**
+     * Extension as a type of job.
+     */
     @Extension
     public static final PandaProjectDescriptor DESCRIPTOR = new PandaProjectDescriptor();
+    /**
+     * List of branches
+     */
+    private volatile List<PandaBranch> branches = new ArrayList<PandaBranch>();
 
-    public PandaProject(ItemGroup parent, String name) {
+    @DataBoundConstructor
+    public PandaProject(ItemGroup parent, String name, List<PandaBranch> branches) {
         super(parent, name);
+        this.branches = new ArrayList<PandaBranch>(branches);
+    }
+
+    public List<PandaBranch> getBranches() {
+        return branches;
     }
 
     @Override
@@ -47,7 +60,7 @@ public class PandaProject extends Job<PandaProject, PandaRun> implements TopLeve
 
         @Override
         public TopLevelItem newInstance(ItemGroup parent, String name) {
-            return new PandaProject(parent, name);
+            return new PandaProject(parent, name, Collections.<PandaBranch>emptyList());
         }
     }
 
