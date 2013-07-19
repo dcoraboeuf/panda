@@ -2,20 +2,22 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
          xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
+    <!-- Main branch -->
+    <f:section title="${%Main branch}">
+        <st:include page="config.jelly" it="${it.mainBranch}" />
+    </f:section>
+
     <!-- Branches -->
     <f:section title="${%Branches}">
         <f:entry>
-            <f:repeatable var="branch" name="branches" items="${instance.branches}" minimum="0">
+            <f:repeatable var="branch" name="branches" items="${instance.branches}" add="${%Add branch}">
                 <table width="100%">
-                    <f:entry title="${%Name}" field="name" help="/panda/PandaProject/branch-name">
-                        <f:textbox value="${branch.name}"/>
-                    </f:entry>
-                    <f:entry title="${%Description}" help="${app.markupFormatter.helpUrl}">
-                        <f:textarea name="description" value="${it.description}" codemirror-mode="${app.markupFormatter.codeMirrorMode}" codemirror-config="${app.markupFormatter.codeMirrorConfig}" previewEndpoint="/markupFormatter/previewDescription"/>
+                    <f:entry>
+                        <st:include page="config.jelly" class="org.jenkins.plugin.panda.PandaBranch" />
                     </f:entry>
                     <f:entry>
                         <div align="right">
-                            <input type="button" value="${%Delete}" class="repeatable-delete show-if-not-only" style="margin-left: 1em;" />
+                            <input type="button" value="${%Delete branch}" class="repeatable-delete" style="margin-left: 1em;" />
                         </div>
                     </f:entry>
                 </table>

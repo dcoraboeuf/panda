@@ -17,14 +17,23 @@ public class PandaProject extends Job<PandaProject, PandaRun> implements TopLeve
     @Extension
     public static final PandaProjectDescriptor DESCRIPTOR = new PandaProjectDescriptor();
     /**
+     * Main branch
+     */
+    private PandaBranch mainBranch;
+    /**
      * List of branches
      */
-    private volatile List<PandaBranch> branches = new ArrayList<PandaBranch>();
+    private List<PandaBranch> branches;
 
     @DataBoundConstructor
-    public PandaProject(ItemGroup parent, String name, List<PandaBranch> branches) {
+    public PandaProject(ItemGroup parent, String name, PandaBranch mainBranch, List<PandaBranch> branches) {
         super(parent, name);
+        this.mainBranch = mainBranch;
         this.branches = new ArrayList<PandaBranch>(branches);
+    }
+
+    public PandaBranch getMainBranch() {
+        return mainBranch;
     }
 
     public List<PandaBranch> getBranches() {
@@ -60,7 +69,7 @@ public class PandaProject extends Job<PandaProject, PandaRun> implements TopLeve
 
         @Override
         public TopLevelItem newInstance(ItemGroup parent, String name) {
-            return new PandaProject(parent, name, Collections.<PandaBranch>emptyList());
+            return new PandaProject(parent, name, new PandaBranch("default", ""), Collections.<PandaBranch>emptyList());
         }
     }
 

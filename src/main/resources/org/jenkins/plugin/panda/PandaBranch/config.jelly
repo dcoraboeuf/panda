@@ -1,0 +1,19 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+    <f:entry title="${%Branch name}" field="name" help="/panda/PandaProject/branch-name">
+        <j:if test="${it.name == 'default'}">
+            <f:readOnlyTextbox value="${it.name}" />
+        </j:if>
+        <j:if test="${it.name != 'default'}">
+            <f:textbox value="${it.name}" />
+        </j:if>
+    </f:entry>
+    <f:entry title="${%Description}" help="${app.markupFormatter.helpUrl}">
+        <f:textarea name="description" value="${it.description}" codemirror-mode="${app.markupFormatter.codeMirrorMode}"
+                    codemirror-config="${app.markupFormatter.codeMirrorConfig}"
+                    previewEndpoint="/markupFormatter/previewDescription"/>
+    </f:entry>
+
+</j:jelly>
