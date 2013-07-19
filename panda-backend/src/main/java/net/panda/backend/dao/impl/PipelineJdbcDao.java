@@ -3,10 +3,12 @@ package net.panda.backend.dao.impl;
 import net.panda.backend.config.Caches;
 import net.panda.backend.dao.PipelineDao;
 import net.panda.backend.dao.model.TPipeline;
+import net.panda.backend.exceptions.PipelineAlreadyExistException;
 import net.panda.dao.AbstractJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,9 +62,13 @@ public class PipelineJdbcDao extends AbstractJdbcDao implements PipelineDao {
     @Transactional
     @CacheEvict(value = Caches.PIPELINE_LIST, key = "'0'")
     public int create(String name, String description) {
-        return dbCreate(
-                SQL.PIPELINE_CREATE,
-                params("name", name).addValue("description", description)
-        );
+        try {
+            return dbCreate(
+                    SQL.PIPELINE_CREATE,
+                    params("name", name).addValue("description", description)
+            );
+        } catch (DuplicateKeyException ex) {
+            throw new PipelineAlreadyExistException(name);
+        }
     }
 }
