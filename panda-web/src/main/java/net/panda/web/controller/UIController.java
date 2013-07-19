@@ -25,6 +25,14 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class UIController extends AbstractUIController {
 
     private final StructureService structureService;
+    private final Function<PipelineSummary, Resource<PipelineSummary>> pipelineSummaryResourceFn = new Function<PipelineSummary, Resource<PipelineSummary>>() {
+        @Override
+        public Resource<PipelineSummary> apply(PipelineSummary o) {
+            return new Resource<>(o)
+                    .withLink(linkTo(methodOn(UIController.class).pipelineGet(o.getId())).withSelfRel())
+                    .withLink(linkTo(methodOn(GUIController.class).pipelineGet(o.getName())).withRel(Resource.REL_GUI));
+        }
+    };
 
     @Autowired
     public UIController(ErrorHandler errorHandler, Strings strings, StructureService structureService) {
@@ -37,6 +45,8 @@ public class UIController extends AbstractUIController {
     @ResponseBody
     Resource<String> home() {
         return new Resource<>("home")
+                .withLink(linkTo(methodOn(UIController.class).home()).withSelfRel())
+                .withLink(linkTo(methodOn(GUIController.class).home()).withRel(Resource.REL_GUI))
                 .withLink(linkTo(methodOn(UIController.class).pipelineList()).withRel("pipelineList"));
     }
 
@@ -46,13 +56,7 @@ public class UIController extends AbstractUIController {
     List<Resource<PipelineSummary>> pipelineList() {
         return Lists.transform(
                 structureService.getPipelines(),
-                new Function<PipelineSummary, Resource<PipelineSummary>>() {
-                    @Override
-                    public Resource<PipelineSummary> apply(PipelineSummary o) {
-                        return new Resource<>(o)
-                                .withLink(linkTo(methodOn(UIController.class).pipelineGet(o.getId())).withSelfRel());
-                    }
-                }
+                pipelineSummaryResourceFn
         );
     }
 
@@ -60,7 +64,6 @@ public class UIController extends AbstractUIController {
     public
     @ResponseBody
     Resource<PipelineSummary> pipelineGet(@PathVariable int id) {
-        return new Resource<>(structureService.getPipeline(id))
-                .withLink(linkTo(methodOn(UIController.class).pipelineGet(id)).withSelfRel());
+        return pipelineSummaryResourceFn.apply(structureService.getPipeline(id));
     }
 }

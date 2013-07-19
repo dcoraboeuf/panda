@@ -9,6 +9,8 @@ import org.springframework.hateoas.ResourceSupport;
 @EqualsAndHashCode(callSuper = false)
 public class Resource<T> extends ResourceSupport {
 
+    public static final String REL_GUI = "gui";
+
     private final T data;
 
     public Resource<T> withLink(Link link) {
