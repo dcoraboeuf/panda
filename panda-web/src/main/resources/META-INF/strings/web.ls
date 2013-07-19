@@ -218,3 +218,7 @@ home
 pipeline.list
     en -> Pipelines
     fr -> Pipelines
+
+pipeline.create
+    en -> New pipeline
+    fr -> Nouveau pipeline
