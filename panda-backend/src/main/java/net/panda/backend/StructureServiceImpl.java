@@ -16,6 +16,16 @@ import java.util.List;
 public class StructureServiceImpl implements StructureService {
 
     private final PipelineDao pipelineDao;
+    private final Function<TPipeline,PipelineSummary> pipelineSummaryFunction = new Function<TPipeline, PipelineSummary>() {
+        @Override
+        public PipelineSummary apply(TPipeline t) {
+            return new PipelineSummary(
+                    t.getId(),
+                    t.getName(),
+                    t.getDescription()
+            );
+        }
+    };
 
     @Autowired
     public StructureServiceImpl(PipelineDao pipelineDao) {
@@ -27,16 +37,13 @@ public class StructureServiceImpl implements StructureService {
     public List<PipelineSummary> getPipelines() {
         return Lists.transform(
                 pipelineDao.findAll(),
-                new Function<TPipeline, PipelineSummary>() {
-                    @Override
-                    public PipelineSummary apply(TPipeline t) {
-                        return new PipelineSummary(
-                                t.getId(),
-                                t.getName(),
-                                t.getDescription()
-                        );
-                    }
-                }
+                pipelineSummaryFunction
         );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PipelineSummary getPipeline(int id) {
+        return pipelineSummaryFunction.apply(pipelineDao.getById(id));
     }
 }

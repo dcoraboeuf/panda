@@ -8,4 +8,5 @@ public interface PipelineDao {
 
     List<TPipeline> findAll();
 
+    TPipeline getById(int id);
 }

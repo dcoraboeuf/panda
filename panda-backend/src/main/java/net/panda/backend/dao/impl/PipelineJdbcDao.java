@@ -43,4 +43,15 @@ public class PipelineJdbcDao extends AbstractJdbcDao implements PipelineDao {
                 pipelineRowMapper
         );
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(Caches.PIPELINE)
+    public TPipeline getById(int id) {
+        return getNamedParameterJdbcTemplate().queryForObject(
+                SQL.PIPELINE_BY_ID,
+                params("id", id),
+                pipelineRowMapper
+        );
+    }
 }

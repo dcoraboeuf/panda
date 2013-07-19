@@ -8,4 +8,5 @@ public interface StructureService {
 
     List<PipelineSummary> getPipelines();
 
+    PipelineSummary getPipeline(int id);
 }
