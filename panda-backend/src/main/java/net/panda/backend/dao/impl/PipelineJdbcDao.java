@@ -5,6 +5,7 @@ import net.panda.backend.dao.PipelineDao;
 import net.panda.backend.dao.model.TPipeline;
 import net.panda.dao.AbstractJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class PipelineJdbcDao extends AbstractJdbcDao implements PipelineDao {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(Caches.PIPELINE_LIST)
+    @Cacheable(value = Caches.PIPELINE_LIST, key = "'0'")
     public List<TPipeline> findAll() {
         return getJdbcTemplate().query(
                 SQL.PIPELINE_ALL,
@@ -52,6 +53,16 @@ public class PipelineJdbcDao extends AbstractJdbcDao implements PipelineDao {
                 SQL.PIPELINE_BY_ID,
                 params("id", id),
                 pipelineRowMapper
+        );
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(value = Caches.PIPELINE_LIST, key = "'0'")
+    public int create(String name, String description) {
+        return dbCreate(
+                SQL.PIPELINE_CREATE,
+                params("name", name).addValue("description", description)
         );
     }
 }

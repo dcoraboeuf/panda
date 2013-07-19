@@ -16,7 +16,7 @@ define(['dialog', 'jquery', 'ajax'], function(dialog, $, ajax) {
                     },
                     successFn: function (pipeline) {
                         config.closeFn();
-                        'gui/pipeline/{0}'.format(pipeline.name.html()).goto();
+                        'gui/pipeline/{0}'.format(pipeline.data.name.html()).goto();
                     },
                     errorFn: ajax.simpleAjaxErrorFn(config.errorFn)
                 });

@@ -2,6 +2,7 @@ package net.panda.web.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import net.panda.core.model.PipelineCreationForm;
 import net.panda.core.model.PipelineSummary;
 import net.panda.service.StructureService;
 import net.panda.web.resource.Resource;
@@ -10,10 +11,7 @@ import net.panda.web.support.ErrorHandler;
 import net.sf.jstring.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,6 +56,13 @@ public class UIController extends AbstractUIController {
                 structureService.getPipelines(),
                 pipelineSummaryResourceFn
         );
+    }
+
+    @RequestMapping(value = "/pipeline", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Resource<PipelineSummary> pipelineCreate(@RequestBody PipelineCreationForm form) {
+        return pipelineSummaryResourceFn.apply(structureService.createPipeline(form));
     }
 
     @RequestMapping(value = "/pipeline/{id}", method = RequestMethod.GET)

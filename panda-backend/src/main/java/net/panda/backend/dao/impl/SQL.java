@@ -8,6 +8,8 @@ public interface SQL {
 
     String PIPELINE_BY_ID = "SELECT * FROM PIPELINE WHERE ID = :id";
 
+    String PIPELINE_CREATE = "INSERT INTO PIPELINE (NAME, DESCRIPTION) VALUES (:name, :description)";
+
     // Configuration
 
     String CONFIGURATION_GET = "SELECT VALUE FROM CONFIGURATION WHERE NAME = :name";
@@ -41,5 +43,4 @@ public interface SQL {
     String ACCOUNT_CHANGE_EMAIL = "UPDATE ACCOUNTS SET EMAIL = :email WHERE ID = :id AND MODE = 'builtin' AND PASSWORD = :password";
 
     String ACCOUNT_CHANGE_LOCALE = "UPDATE ACCOUNTS SET LOCALE = :locale WHERE ID = :id";
-
 }
