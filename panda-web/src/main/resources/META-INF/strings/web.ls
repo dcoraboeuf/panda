@@ -105,6 +105,108 @@ logout
     en -> Sign out
     fr -> Se déconnecter
 
+
+[settings]
+
+settings
+    en -> Settings
+    fr -> Configuration
+
+settings.security
+    en -> Security settings
+    fr -> Configuration de la sécurité
+
+settings.mail
+    en -> Mail settings
+    fr -> Configuration du courriel
+
+settings.general
+    en -> General configuration
+    fr -> Configuration générale
+
+[settings.general]
+
+settings.general.baseUrl
+    en -> Base URL
+    fr -> URL de référence
+
+settings.general.saved
+    en -> General configuration has been saved.
+    fr -> La configuration générale a été sauvegardée.
+
+[settings.security.ldap]
+
+ldap.enabled
+    en -> Enable LDAP authentication
+    fr -> Activer l'authentification par LDAP
+
+ldap.host
+    en -> LDAP server
+    fr -> Serveur LDAP
+
+ldap.port
+    en -> LDAP server port
+    fr -> Port du serveur LDAP
+
+ldap.search.base
+    en -> LDAP search base
+    fr -> Base de recherche LDAP
+
+ldap.search.filter
+    en -> LDAP filter
+    fr -> Filtre LDAP
+
+ldap.user
+    en -> LDAP user
+    fr -> Utilisateur LDAP
+
+ldap.password
+    en -> LDAP password
+    fr -> Mot de passe LDAP
+
+ldap.fullNameAttribute
+    en -> Full name attribute
+    fr -> Attribut pour le nom complet
+
+ldap.emailAttribute
+    en -> Email attribute
+    fr -> Attribut pour le courriel
+
+ldap.saved
+    en -> LDAP configuration has been saved.
+    fr -> La configuration LDAP a été sauvegardée.
+
+[settings.mail]
+
+mail.saved
+    en -> Mail configuration has been saved.
+    fr -> La configuration du courriel a été sauvegardée.
+
+
+mail.host
+    en -> Mail server
+    fr -> Serveur de courriel
+
+mail.user
+    en -> User
+    fr -> Utilisateur
+
+mail.password
+    en -> Password
+    fr -> Mot de passe
+
+mail.authentication
+    en -> Authentication
+    fr -> Authentification
+
+mail.startTls
+    en -> Start TLS
+    fr -> Démarrer TLS
+
+mail.replyToAddress
+    en -> Reply to address
+    fr -> Adresse de retour
+
 [home]
 
 home
