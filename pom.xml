@@ -48,6 +48,7 @@
         <module>panda-web-support</module>
         <module>panda-core</module>
         <module>panda-web</module>
+        <module>panda-backend</module>
     </modules>
 
 	<dependencyManagement>

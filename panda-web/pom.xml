@@ -25,16 +25,16 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>ontrack-extension-api</artifactId>
+            <artifactId>panda-extension-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>ontrack-backend</artifactId>
+            <artifactId>panda-backend</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
-        -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>panda-web-support</artifactId>
