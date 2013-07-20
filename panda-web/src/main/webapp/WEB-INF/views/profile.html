@@ -1,0 +1,48 @@
+<#include "/lib/layout.html">
+
+<@layout_std page="profile" breadcrumbs={loc("home"):""}>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12 page-title">
+                <span class="title">
+                    <@lh key="profile" />
+                </span>
+                <span class="action action-optional">
+                    <a href=""><i class="icon-remove"></i> <@lh key="general.close" /></a>
+                </span>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <ul>
+                    <li><@lh key="account.name" /> : <b>${account.name?html}</b></li>
+                    <li><@lh key="account.fullName" /> : <b>${account.fullName?html}</b></li>
+                    <li><@lh key="account.email" /> : <b>${account.email?html}</b></li>
+                    <li><@lh key="account.role" /> : <b><@lh key="account.role.${account.roleName?html}" /></b></li>
+                    <li><@lh key="account.locale" /> : <b><@lh key="language." + account.locale /></b></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <#if account.mode == "builtin">
+                    <a class="btn" href="gui/admin/password"><@lh key="profile.changePassword" /></a>
+                    <a class="btn" href="gui/admin/email"><@lh key="profile.changeEmail" /></a>
+                </#if>
+                <div class="btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        <@lh key="profile.changeLanguage" />
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <#list locLanguages() as lang>
+                            <li>
+                                <a data-language="${lang}" class="profile-language"><@lh key="language." + lang /></a>
+                            </li>
+                        </#list>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</@layout_std>

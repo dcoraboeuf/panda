@@ -161,4 +161,18 @@ public class GUIAdminController extends AbstractGUIController {
         // OK
         return new RedirectView("/account", true);
     }
+
+    /**
+     * Profile page
+     */
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public ModelAndView profile() {
+        ModelAndView model = new ModelAndView("profile");
+        // Checks the user is logged
+        securityUtils.checkIsLogged();
+        // Gets the user profile
+        model.addObject("account", securityUtils.getCurrentAccount());
+        // OK
+        return model;
+    }
 }
