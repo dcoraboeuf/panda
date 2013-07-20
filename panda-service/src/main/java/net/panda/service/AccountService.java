@@ -16,7 +16,7 @@ public interface AccountService {
 
     List<Account> getAccounts();
 
-    ID createAccount(AccountCreationForm form);
+    Account createAccount(AccountCreationForm form);
 
     void deleteAccount(int id);
 

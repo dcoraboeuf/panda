@@ -94,7 +94,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
     @Override
     @Transactional
     @Secured(SecurityRoles.ADMINISTRATOR)
-    public ID createAccount(final AccountCreationForm form) {
+    public Account createAccount(final AccountCreationForm form) {
         // Validation
         validate(form, AccountValidation.class);
         // Validation: role
@@ -117,13 +117,15 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
             }
         }, "net.panda.core.model.Account.password.requiredForBuiltin");
         // OK
-        return accountDao.createAccount(
-                form.getName(),
-                form.getFullName(),
-                form.getEmail(),
-                form.getRoleName(),
-                form.getMode(),
-                form.getPassword()
+        return getAccount(
+                accountDao.createAccount(
+                        form.getName(),
+                        form.getFullName(),
+                        form.getEmail(),
+                        form.getRoleName(),
+                        form.getMode(),
+                        form.getPassword()
+                )
         );
     }
 

@@ -5,7 +5,6 @@ import net.panda.backend.dao.AccountDao;
 import net.panda.backend.dao.model.TAccount;
 import net.panda.backend.exceptions.AccountAlreadyExistException;
 import net.panda.core.model.Ack;
-import net.panda.core.model.ID;
 import net.panda.dao.AbstractJdbcDao;
 import net.panda.dao.SQLUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -103,9 +102,9 @@ public class AccountJdbcDao extends AbstractJdbcDao implements AccountDao {
 
     @Override
     @Transactional
-    public ID createAccount(String name, String fullName, String email, String roleName, String mode, String password) {
+    public int createAccount(String name, String fullName, String email, String roleName, String mode, String password) {
         try {
-            return ID.success(dbCreate(
+            return dbCreate(
                     SQL.ACCOUNT_CREATE,
                     params("name", name)
                             .addValue("fullName", fullName)
@@ -113,7 +112,7 @@ public class AccountJdbcDao extends AbstractJdbcDao implements AccountDao {
                             .addValue("email", email)
                             .addValue("mode", mode)
                             .addValue("password", encodePassword(password))
-            ));
+            );
         } catch (DuplicateKeyException ex) {
             throw new AccountAlreadyExistException(name);
         }

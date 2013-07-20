@@ -19,7 +19,7 @@ public interface AccountDao {
 
     List<TAccount> findAll();
 
-    ID createAccount(String name, String fullName, String email, String roleName, String mode, String password);
+    int createAccount(String name, String fullName, String email, String roleName, String mode, String password);
 
     void deleteAccount(int id);
 

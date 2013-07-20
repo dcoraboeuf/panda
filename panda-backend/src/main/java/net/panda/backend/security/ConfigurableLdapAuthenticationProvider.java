@@ -2,7 +2,6 @@ package net.panda.backend.security;
 
 import net.panda.core.model.Account;
 import net.panda.core.model.AccountCreationForm;
-import net.panda.core.model.ID;
 import net.panda.core.security.SecurityRoles;
 import net.panda.core.security.SecurityUtils;
 import net.panda.service.AccountService;
@@ -61,7 +60,7 @@ public class ConfigurableLdapAuthenticationProvider implements AuthenticationPro
                             account = securityUtils.asAdmin(new Callable<Account>() {
                                 @Override
                                 public Account call() throws Exception {
-                                    ID id = accountService.createAccount(new AccountCreationForm(
+                                    return accountService.createAccount(new AccountCreationForm(
                                             name,
                                             details.getFullName(),
                                             details.getEmail(),
@@ -70,8 +69,6 @@ public class ConfigurableLdapAuthenticationProvider implements AuthenticationPro
                                             "",
                                             ""
                                     ));
-                                    // Created account
-                                    return accountService.getAccount(id.getValue());
                                 }
                             });
                         } else {
