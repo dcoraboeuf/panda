@@ -3,6 +3,7 @@ package net.panda.web.controller;
 import com.google.common.base.Function;
 import net.panda.core.model.Account;
 import net.panda.core.model.AccountCreationForm;
+import net.panda.core.model.AccountUpdateForm;
 import net.panda.service.AccountService;
 import net.panda.web.resource.Resource;
 import net.panda.web.support.AbstractUIController;
@@ -45,5 +46,15 @@ public class UIAdminController extends AbstractUIController {
     @ResponseBody
     Resource<Account> accountCreate(@RequestBody AccountCreationForm form) {
         return accountResourceFn.apply(accountService.createAccount(form));
+    }
+
+    /**
+     * Actual update of an account
+     */
+    @RequestMapping(value = "/ui/account/{id}", method = RequestMethod.PUT)
+    public
+    @ResponseBody
+    Resource<Account> accountUpdate(@PathVariable int id, @RequestBody AccountUpdateForm form) {
+        return accountResourceFn.apply(accountService.updateAccount(id, form));
     }
 }

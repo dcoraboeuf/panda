@@ -20,7 +20,7 @@ public interface AccountService {
 
     void deleteAccount(int id);
 
-    void updateAccount(int id, AccountUpdateForm form);
+    Account updateAccount(int id, AccountUpdateForm form);
 
     Ack changePassword(int id, PasswordChangeForm form);
 

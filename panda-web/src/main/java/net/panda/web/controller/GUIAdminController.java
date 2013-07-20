@@ -14,6 +14,7 @@ import net.panda.web.support.AbstractGUIController;
 import net.panda.web.support.ErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -96,7 +97,7 @@ public class GUIAdminController extends AbstractGUIController {
     /**
      * Management of accounts
      */
-    @RequestMapping(value = "/accounts", method = RequestMethod.GET)
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ModelAndView accounts() {
         ModelAndView model = new ModelAndView("accounts");
         // List of accounts
@@ -117,6 +118,16 @@ public class GUIAdminController extends AbstractGUIController {
             }
         }
         // OK
+        return model;
+    }
+
+    /**
+     * Request for the update of an account
+     */
+    @RequestMapping(value = "/account/{id}/update", method = RequestMethod.GET)
+    public ModelAndView accountUpdate(@PathVariable int id) {
+        ModelAndView model = new ModelAndView("account-update");
+        model.addObject("account", accountService.getAccount(id));
         return model;
     }
 }

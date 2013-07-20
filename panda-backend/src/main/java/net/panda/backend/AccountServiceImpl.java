@@ -139,26 +139,17 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
     @Override
     @Transactional
     @Secured(SecurityRoles.ADMINISTRATOR)
-    public void updateAccount(int id, AccountUpdateForm form) {
-        // Gets the existing account
-        Account account = getAccount(id);
-        // Previous values
-        String oldName = account.getName();
-        String oldFullName = account.getFullName();
-        // New values
-        String name = form.getName();
-        String fullName = form.getFullName();
-        // Differences in names?
-        boolean differentNames = !StringUtils.equals(oldName, name)
-                || !StringUtils.equals(oldFullName, fullName);
+    public Account updateAccount(int id, AccountUpdateForm form) {
         // Updates the account
         accountDao.updateAccount(
                 id,
-                name,
-                fullName,
+                form.getName(),
+                form.getFullName(),
                 form.getEmail(),
                 form.getRoleName()
         );
+        // OK
+        return getAccount(id);
     }
 
     @Override
