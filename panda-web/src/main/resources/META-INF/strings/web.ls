@@ -207,6 +207,104 @@ mail.replyToAddress
     en -> Reply to address
     fr -> Adresse de retour
 
+[accounts]
+
+accounts
+    en -> Accounts
+    fr -> Utilisateurs
+
+accounts.ldap-warning
+    en -> The LDAP is not enabled and some users may not be able to connect.
+    fr -> La configuration LDAP n'est pas activée et quelques utilisateurs pourraient ne pas pouvoir se connecter.
+
+account.new
+    en -> Create a new account
+    fr -> Créer un nouvel utilisateur
+
+account.name
+    en -> Name
+    fr -> Nom
+
+account.fullName
+    en -> Full name
+    fr -> Nom complet
+
+account.email
+    en -> eMail
+    fr -> Courriel
+
+account.role
+    en -> Role
+    fr -> Rôle
+
+account.role.ROLE_ADMIN
+    en -> Administrator
+    fr -> Administrateur
+account.role.ROLE_USER
+    en -> User
+    fr -> Utilisateur
+account.role.ROLE_ADMIN.help
+    en -> Administrators can: manage other accounts, manage all entities (pipelines, branches...).
+    fr -> Les administrateurs peuvent gérer les autres comptes, gérer toutes les entités (pipelines, branches, ...).
+account.role.ROLE_USER.help
+    en -> Users can perform actions that have been granted to them by administrators.
+    fr -> Les utilisateurs ne peuvent effectuer que les actions qui leur ont été permises par des administrateurs.
+
+account.mode
+    en -> Authentication mode
+    fr -> Mode d'authentification
+
+account.mode.builtin
+    en -> Built in
+    fr -> Prédéfini
+
+account.mode.ldap
+    en,fr -> LDAP
+
+account.locale
+    en -> Language used for reports
+    fr -> Langage utilisé pour les rapports
+
+account.password
+    en -> Password
+    fr -> Mot de passe
+
+account.password.confirm
+    en -> Confirm password
+    fr -> Confirmation du mot de passe
+
+account.password.confirm.incorrect
+    en -> Password confirmation is incorrect
+    fr -> La confirmation du mot de passe est incorrecte.
+
+account.delete
+    en -> Account deletion
+    fr -> Suppression d'un compte utilisateur
+
+account.delete.message
+    en -> Do you really want to delete the following account?
+    fr -> Voulez-vous vraiment supprimer le compte suivant ?
+
+account.deleted
+    en -> Account has been deleted.
+    fr -> L'utilisateur a été supprimé.
+
+account.update
+    en -> Account update
+    fr -> Mise à jour d'un compte utilisateur
+
+account.updated
+    en -> Account has been updated.
+    fr -> L'utilisateur a été mis à jour.
+
+account.passwordReset
+    en -> Reset password
+    fr -> Réinitialiser le mot de passe
+
+account.passwordReset.title
+    en -> Reset password for {0}
+    fr -> Réinitialiser du mot de passe de {0}
+
 [home]
 
 home
