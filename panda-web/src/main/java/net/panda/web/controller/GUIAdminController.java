@@ -130,4 +130,14 @@ public class GUIAdminController extends AbstractGUIController {
         model.addObject("account", accountService.getAccount(id));
         return model;
     }
+
+    /**
+     * Request for the reset of the password of an account
+     */
+    @RequestMapping(value = "/account/{id}/passwordReset", method = RequestMethod.GET)
+    public ModelAndView passwordReset(@PathVariable int id) {
+        ModelAndView model = new ModelAndView("account-password");
+        model.addObject("account", accountService.getAccount(id));
+        return model;
+    }
 }

@@ -3,6 +3,7 @@ package net.panda.web.controller;
 import com.google.common.base.Function;
 import net.panda.core.model.Account;
 import net.panda.core.model.AccountCreationForm;
+import net.panda.core.model.AccountPasswordResetForm;
 import net.panda.core.model.AccountUpdateForm;
 import net.panda.service.AccountService;
 import net.panda.web.resource.Resource;
@@ -56,5 +57,20 @@ public class UIAdminController extends AbstractUIController {
     @ResponseBody
     Resource<Account> accountUpdate(@PathVariable int id, @RequestBody AccountUpdateForm form) {
         return accountResourceFn.apply(accountService.updateAccount(id, form));
+    }
+
+    /**
+     * Password reset
+     */
+    @RequestMapping(value = "/ui/account/{id}/password", method = RequestMethod.PUT)
+    public
+    @ResponseBody
+    Resource<Account> accountPasswordReset(@PathVariable int id, @RequestBody AccountPasswordResetForm form) {
+        return accountResourceFn.apply(
+                accountService.resetPassword(
+                        id,
+                        form.getPassword()
+                )
+        );
     }
 }

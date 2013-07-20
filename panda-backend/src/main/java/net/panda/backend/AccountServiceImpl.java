@@ -187,17 +187,16 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
     @Override
     @Transactional
     @Secured(SecurityRoles.ADMINISTRATOR)
-    public Ack resetPassword(int id, String password) {
+    public Account resetPassword(int id, String password) {
         // Gets the existing account
         Account account = getAccount(id);
         // Checks the mode
         if ("builtin".equals(account.getMode())) {
             // DAO
-            return accountDao.resetPassword(id, password);
-        } else {
-            // Cannot change password in this case
-            return Ack.NOK;
+            accountDao.resetPassword(id, password);
         }
+        // OK
+        return getAccount(id);
     }
 
     @Override
