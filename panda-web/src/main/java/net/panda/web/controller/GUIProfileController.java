@@ -2,6 +2,7 @@ package net.panda.web.controller;
 
 import net.panda.core.UserMessage;
 import net.panda.core.model.Ack;
+import net.panda.core.model.EmailChangeForm;
 import net.panda.core.model.PasswordChangeForm;
 import net.panda.core.security.SecurityUtils;
 import net.panda.service.AccountService;
@@ -77,6 +78,40 @@ public class GUIProfileController extends AbstractGUIController {
             WebUtils.userMessage(redirectAttributes, UserMessage.error("profile.changePassword.nok"));
             // Back to the change page
             return new RedirectView("/profile/password", true);
+        }
+    }
+
+    /**
+     * Request to change his email
+     */
+    @RequestMapping(value = "/profile/email", method = RequestMethod.GET)
+    public ModelAndView email() {
+        securityUtils.checkIsLogged();
+        return new ModelAndView("email");
+    }
+
+    /**
+     * Actual change of his email
+     */
+    @RequestMapping(value = "/profile/email", method = RequestMethod.POST)
+    public RedirectView email(final EmailChangeForm form, RedirectAttributes redirectAttributes) {
+        final int accountId = securityUtils.getCurrentAccountId();
+        Ack ack = securityUtils.asAdmin(new Callable<Ack>() {
+            @Override
+            public Ack call() throws Exception {
+                return accountService.changeEmail(accountId, form);
+            }
+        });
+        if (ack.isSuccess()) {
+            // Success message
+            WebUtils.userMessage(redirectAttributes, UserMessage.success("profile.changeEmail.ok"));
+            // Back to the profile
+            return new RedirectView("/profile", true);
+        } else {
+            // Error message
+            WebUtils.userMessage(redirectAttributes, UserMessage.error("profile.changeEmail.nok"));
+            // Back to the change page
+            return new RedirectView("/profile/email", true);
         }
     }
 }
