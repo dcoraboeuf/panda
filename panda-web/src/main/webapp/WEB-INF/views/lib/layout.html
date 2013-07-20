@@ -11,8 +11,7 @@
 
 <#macro layout_root page extension=false style=false noscript=false scripts=[] modules=[] title="" scope="default">
 	<!DOCTYPE html>
-    <!-- TODO Language selected -->
-	<html>
+	<html lang="${locSelected()}">
 		<head>
 			<base href="${baseURL}/" />
 			<#assign static = "resources/v" + loc('app.version') />
@@ -86,8 +85,7 @@
             </script>
 
             <!-- Localization script -->
-            <!-- TODO Language -->
-            <script src="localization/en/<@lh key='app.version'/>" type="text/javascript"></script>
+            <script src="localization/${locSelected()}/<@lh key='app.version'/>" type="text/javascript"></script>
 
 			<#list modules as module>
 				<!-- Module: ${module} -->
@@ -117,7 +115,7 @@
                             <@user />
 						</#if>
 						<#if showLanguage>
-                            <!-- TODO Languages -->
+                            <@languages />
 						</#if>
 						<#if showVersion>
 							<li>
