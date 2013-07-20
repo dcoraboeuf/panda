@@ -4,8 +4,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import net.panda.core.UserMessage;
 import net.panda.core.model.Account;
-import net.panda.core.model.Ack;
-import net.panda.core.model.PasswordChangeForm;
 import net.panda.core.security.SecurityUtils;
 import net.panda.service.AccountService;
 import net.panda.service.AdminService;
@@ -14,7 +12,6 @@ import net.panda.service.model.LDAPConfiguration;
 import net.panda.service.model.MailConfiguration;
 import net.panda.web.support.AbstractGUIController;
 import net.panda.web.support.ErrorHandler;
-import net.panda.web.support.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @Controller
 public class GUIAdminController extends AbstractGUIController {
@@ -166,52 +162,4 @@ public class GUIAdminController extends AbstractGUIController {
         return new RedirectView("/account", true);
     }
 
-    /**
-     * Profile page
-     */
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ModelAndView profile() {
-        ModelAndView model = new ModelAndView("profile");
-        // Checks the user is logged
-        securityUtils.checkIsLogged();
-        // Gets the user profile
-        model.addObject("account", securityUtils.getCurrentAccount());
-        // OK
-        return model;
-    }
-
-
-    /**
-     * Request to change his password
-     */
-    @RequestMapping(value = "/profile/password", method = RequestMethod.GET)
-    public ModelAndView password() {
-        securityUtils.checkIsLogged();
-        return new ModelAndView("profile-password");
-    }
-
-    /**
-     * Actual change of his password
-     */
-    @RequestMapping(value = "/profile/password", method = RequestMethod.POST)
-    public RedirectView password(final PasswordChangeForm form, RedirectAttributes redirectAttributes) {
-        final int accountId = securityUtils.getCurrentAccountId();
-        Ack ack = securityUtils.asAdmin(new Callable<Ack>() {
-            @Override
-            public Ack call() throws Exception {
-                return accountService.changePassword(accountId, form);
-            }
-        });
-        if (ack.isSuccess()) {
-            // Success message
-            WebUtils.userMessage(redirectAttributes, UserMessage.success("profile.changePassword.ok"));
-            // Back to the profile
-            return new RedirectView("/profile", true);
-        } else {
-            // Error message
-            WebUtils.userMessage(redirectAttributes, UserMessage.error("profile.changePassword.nok"));
-            // Back to the change page
-            return new RedirectView("/profile/password", true);
-        }
-    }
 }
