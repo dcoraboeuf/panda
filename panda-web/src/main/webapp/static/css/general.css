@@ -32,3 +32,30 @@
     font-style: italic;
     color: #AAAAAA;
 }
+
+/* Page title */
+
+.title {
+    font-weight: bold;
+    font-size: 150%;
+}
+
+/*  Action visible only when container is hovered */
+
+.action.action-optional {
+    opacity: 0.25;
+    float: right;
+}
+
+.action.action-optional.action-inline {
+    float: none;
+}
+
+*:hover > .action.action-optional {
+    opacity: 1.0;
+}
+
+.action.action-optional a {
+    text-decoration: none;
+    color: black;
+}

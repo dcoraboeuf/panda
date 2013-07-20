@@ -3,20 +3,13 @@
 <@layout_std
     page="pipeline"
     title=pipeline.name?html
+    noscript=true
     breadcrumbs={
         loc("home"): ""
     }>
 
-    ${pipeline.name?html}
+    <@title value=pipeline.name>
 
-    <p>
-        TODO Close button
-    </p>
-    <p>
-        TODO Title bar
-    </p>
-    <p>
-        TODO Common component for the header
-    </p>
+    </@title>
 
 </@layout_std>

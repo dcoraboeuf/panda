@@ -85,3 +85,16 @@
 <#macro input_required required=true>
     <#if required>required="required"</#if>
 </#macro>
+
+<#macro title value close="">
+    <div class="row-fluid">
+        <div class="span12">
+            <span class="title">
+                ${value?html}
+            </span>
+            <span class="action action-optional">
+                <a href=""><i class="icon-remove"></i> <@lh key="general.close" /></a>
+            </span>
+        </div>
+    </div>
+</#macro>
