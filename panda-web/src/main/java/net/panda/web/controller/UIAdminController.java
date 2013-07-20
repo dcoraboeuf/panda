@@ -21,11 +21,18 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class UIAdminController extends AbstractUIController {
 
     private final AccountService accountService;
-    private final Function<Account, Resource<Account>> accountResourceFn = new Function<Account, Resource<Account>>() {
+    private final Function<Account, Resource<Account>> accountResourceStubFn = new Function<Account, Resource<Account>>() {
         @Override
         public Resource<Account> apply(Account o) {
             return new Resource<>(o)
                     .withLink(linkTo(methodOn(UIAdminController.class).accountGet(o.getId())).withSelfRel());
+        }
+    };
+    private final Function<Account, Resource<Account>> accountResourceFn = new Function<Account, Resource<Account>>() {
+        @Override
+        public Resource<Account> apply(Account o) {
+            return accountResourceStubFn.apply(o);
+            // TODO GUI links
         }
     };
 
@@ -57,6 +64,18 @@ public class UIAdminController extends AbstractUIController {
     @ResponseBody
     Resource<Account> accountUpdate(@PathVariable int id, @RequestBody AccountUpdateForm form) {
         return accountResourceFn.apply(accountService.updateAccount(id, form));
+    }
+
+    /**
+     * Deleting an account
+     */
+    @RequestMapping(value = "/ui/account/{id}", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    Resource<Account> accountDelete(@PathVariable int id) {
+        Resource<Account> old = accountResourceStubFn.apply(accountService.getAccount(id));
+        accountService.deleteAccount(id);
+        return old;
     }
 
     /**

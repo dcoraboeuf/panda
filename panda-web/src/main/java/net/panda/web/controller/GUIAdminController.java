@@ -140,4 +140,25 @@ public class GUIAdminController extends AbstractGUIController {
         model.addObject("account", accountService.getAccount(id));
         return model;
     }
+
+    /**
+     * Request for the deletion of an account
+     */
+    @RequestMapping(value = "/account/{id}/delete", method = RequestMethod.GET)
+    public ModelAndView accountDelete(@PathVariable int id) {
+        ModelAndView model = new ModelAndView("account-delete");
+        model.addObject("account", accountService.getAccount(id));
+        return model;
+    }
+
+    /**
+     * Actual deletion of an account
+     */
+    @RequestMapping(value = "/account/{id}/delete", method = RequestMethod.POST)
+    public RedirectView accountDelete(@PathVariable int id, RedirectAttributes redirectAttributes) {
+        accountService.deleteAccount(id);
+        redirectAttributes.addFlashAttribute("message", UserMessage.success("account.deleted"));
+        // OK
+        return new RedirectView("/account", true);
+    }
 }
