@@ -86,7 +86,7 @@
     <#if required>required="required"</#if>
 </#macro>
 
-<#macro title value close="">
+<#macro title value description="" close="">
     <div class="row-fluid">
         <div class="span12">
             <span class="title">
@@ -95,6 +95,11 @@
             <span class="action action-optional">
                 <a href="${close?html}"><i class="icon-remove"></i> <@lh key="general.close" /></a>
             </span>
+            <#if description != "">
+                <p class="description">
+                    ${description?html}
+                </p>
+            </#if>
         </div>
     </div>
 </#macro>
