@@ -98,7 +98,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // - security
         variables.put("secLogged", new FnSecLogged(securityUtils));
         variables.put("secAccountId", new FnSecAccountId(securityUtils));
-        variables.put("secAdmin", new FnSecAdmin(securityUtils));
+        variables.put("secGrant", new FnSecGrant(securityUtils));
         variables.put("secDisplayName", new FnSecDisplayName(securityUtils));
         // OK
         c.setFreemarkerVariables(variables);

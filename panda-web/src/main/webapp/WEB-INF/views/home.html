@@ -10,7 +10,7 @@
                     class="dynamic"
                     dynamic-controller="pipeline-list"
                     ></div>
-                <#if secAdmin()>
+                <#if secGrant('PIPELINE',0,'CREATE')>
                     <button id="pipeline-create" type="button" class="btn"><@lh key="pipeline.create" /></button>
                 </#if>
             </@section>

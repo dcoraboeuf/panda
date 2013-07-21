@@ -4,17 +4,15 @@
     <#if secLogged()>
         <li class="dropdown">
             <a id="header-user" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <#if secAdmin() >
-                    <i class="icon-lock icon-white"></i>
-                    <#else>
-                        <i class="icon-user icon-white"></i>
-                </#if>
+                <i class="icon-user icon-white"></i>
                 ${ secDisplayName()?html }
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <#if secAdmin() >
+                <#if secGrant('ACCOUNT',0,'CONFIGURE') >
                     <li><a id="header-accounts" href="account"><@lh key="accounts" /></a></li>
+                </#if>
+                <#if secGrant('SETTINGS',0,'CONFIGURE') >
                     <li><a id="header-settings" href="settings"><@lh key="settings" /></a></li>
                 </#if>
                 <!-- Profile page -->

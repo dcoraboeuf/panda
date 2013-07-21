@@ -21,4 +21,8 @@ public interface SecurityUtils {
     void checkIsLogged();
 
     <T> T asAdmin(Callable<T> call);
+
+    boolean isGranted(String category, int id, String action);
+
+    void checkGrant(String category, int id, String action);
 }

@@ -96,4 +96,17 @@ public class SecurityUtilsImpl implements SecurityUtils {
             SecurityContextHolder.setContext(context);
         }
     }
+
+    @Override
+    public boolean isGranted(String category, int id, String action) {
+        // TODO Fine grained authorizations
+        return isAdmin();
+    }
+
+    @Override
+    public void checkGrant(String category, int id, String action) {
+        if (!isGranted(category, id, action)) {
+            throw new AccessDeniedException("Access is not granted");
+        }
+    }
 }

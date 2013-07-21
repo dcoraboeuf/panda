@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class FnSecAdmin implements TemplateMethodModel {
+public class FnSecGrant implements TemplateMethodModel {
 
     private final SecurityUtils securityUtils;
 
     @Autowired
-    public FnSecAdmin(SecurityUtils securityUtils) {
+    public FnSecGrant(SecurityUtils securityUtils) {
         this.securityUtils = securityUtils;
     }
 
@@ -22,9 +22,13 @@ public class FnSecAdmin implements TemplateMethodModel {
             throws TemplateModelException {
         // Checks
         Validate.notNull(list, "List of arguments is required");
-        Validate.isTrue(list.size() == 0, "No argument is needed");
+        Validate.isTrue(list.size() == 3, "3 arguments are needed");
+        // Input
+        String category = (String) list.get(0);
+        int id = Integer.parseInt((String) list.get(1), 10);
+        String action = (String) list.get(2);
         // Test
-        return securityUtils.isAdmin();
+        return securityUtils.isGranted(category, id, action);
     }
 
 }
