@@ -1,15 +1,15 @@
-jenkins-panda
-=============
+panda
+=====
 
 In Jenkins, one deals with jobs, their parameters, their orchestration, their duplication between branches (using templating or not), the duplication of their orchestration, etc. In the Jenkins core, not much of this is available. One would need to install plug-ins, update ones or even create some from scratch. And then make them work together.
 
 My feeling is that the idea of a pipeline should be central to the continuous integration.
 
-The idea behind `jenkins-panda` (1) is to be able to support pipelines in Jenkins as an (almost) first-class citizen.
+The idea behind `panda` (1) is to be able to support pipelines.
 
-One would define a `pipeline` in Jenkins as a particular class of job, with a given set of parameters. It would be associated with `stages` that are run in sequence, automatically, manually or conditionally (using triggers).
+One would define a `pipeline` in Panda with a given set of parameters. It would be associated with `stages` that are run in sequence, automatically, manually or conditionally (using triggers).
 
-Stages are groups of jobs (in the regular Jenkins sense) that are either run in parallel or in sequence. Each job accepts a subset of the parameters defined by the pipeline.
+Stages are groups of jobs that are either run in parallel or in sequence. Each job accepts a subset of the parameters defined by the pipeline. A job can be linked to a real (remote) Jenkins job, or be anything else.
 
 A pipeline can be defined with a default set of parameters, but `branches` can be defined as other sets of parameters.
 
