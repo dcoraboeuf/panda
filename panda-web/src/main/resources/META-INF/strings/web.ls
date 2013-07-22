@@ -412,3 +412,27 @@ pipeline.list
 pipeline.create
     en -> New pipeline
     fr -> Nouveau pipeline
+
+pipeline.parameters
+    en -> Parameters
+    fr -> Paramètres
+
+pipeline.parameters.description
+    en -> List of parameters that define the pipeline.
+    fr -> Liste des paramètres qui définissent le pipeline.
+
+pipeline.branches
+    en -> Branches
+    fr -> Branches
+
+pipeline.branches.description
+    en -> List of branches for this pipeline.
+    fr -> Branches pour ce pipeline.
+
+pipeline.stages
+    en -> Stages
+    fr -> Niveaux
+
+pipeline.stages.description
+    en -> List of stages for this pipeline.
+    fr -> Définition des niveaux pour ce pipeline.

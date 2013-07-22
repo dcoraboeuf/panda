@@ -103,3 +103,16 @@
         </div>
     </div>
 </#macro>
+
+<#macro section title="" description="">
+    <section>
+        <#if title != "">
+            <h1><small>${title?html}</small></h1>
+        </#if>
+        <#if description != "">
+            <p class="description">
+                ${description?html}
+            </p>
+        </#if>
+    </section>
+</#macro>
