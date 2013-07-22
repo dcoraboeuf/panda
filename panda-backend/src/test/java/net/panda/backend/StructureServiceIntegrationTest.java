@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
 
 import static org.junit.Assert.assertNotNull;
 
-public class StructureServiceITest extends AbstractIntegrationTest {
+public class StructureServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     private StructureService service;
