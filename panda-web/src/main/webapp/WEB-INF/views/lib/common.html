@@ -87,12 +87,27 @@
 </#macro>
 
 <#macro title value description="" close="">
+    <#assign commands = [] />
+    <#assign content><#nested/></#assign>
     <div class="row-fluid">
         <div class="span12">
             <span class="title">
                 ${value?html}
             </span>
             <span class="action action-optional">
+                <#list commands as command>
+                    <#if command.link != "">
+                        <a id="${command.id?html}" href="${command.link?html}">
+                            <i class="${command.class?html}"></i>
+                            ${command.title?html}
+                        </a>
+                    <#else>
+                        <span id="${command.id?html}" class="action action-optional">
+                            <i class="${command.class?html}"></i>
+                            ${command.title?html}
+                        </span>
+                    </#if>
+                </#list>
                 <a href="${close?html}"><i class="icon-remove"></i> <@lh key="general.close" /></a>
             </span>
             <#if description != "">
@@ -104,10 +119,21 @@
     </div>
 </#macro>
 
+<#macro title_command id title class link="">
+    <#assign commands = commands + [{
+        'id': id,
+        'title': title,
+        'class': class,
+        'link': link
+        }] />
+</#macro>
+
 <#macro section title="" description="">
     <section>
         <#if title != "">
-            <h1><small>${title?html}</small></h1>
+            <h1><small>
+                ${title?html}
+            </small></h1>
         </#if>
         <#if description != "">
             <p class="description">
