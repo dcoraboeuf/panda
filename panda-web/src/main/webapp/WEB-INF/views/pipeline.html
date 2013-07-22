@@ -19,7 +19,12 @@
     <div class="row-fluid">
         <div class="span4">
             <@section title=loc('pipeline.parameters') description=loc('pipeline.parameters.description')>
-                TODO Parameters
+                <div
+                    id="pipeline-parameter-list"
+                    class="dynamic"
+                    dynamic-controller="pipeline-parameter-list"
+                    dynamic-pipeline-id="${pipeline.id?c}"
+                    ></div>
             </@section>
         </div>
         <div class="span4">
