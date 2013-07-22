@@ -43,13 +43,15 @@ define(function () {
     };
 
     String.prototype.goto = function () {
-        var base = document.getElementsByTagName('base');
         var url = this;
-        if (base && base[0] && base[0].href) {
-            if (base[0].href.substr(base[0].href.length - 1) == '/' && url.charAt(0) == '/') {
-                url = url.substr(1);
+        if (url.length <= 4 || url.substring(0, 4) != 'http') {
+            var base = document.getElementsByTagName('base');
+            if (base && base[0] && base[0].href) {
+                if (base[0].href.substr(base[0].href.length - 1) == '/' && url.charAt(0) == '/') {
+                    url = url.substr(1);
+                }
+                url = base[0].href + url;
             }
-            url = base[0].href + url;
         }
         location.href = url;
     }
@@ -218,6 +220,14 @@ define(function () {
         return obj;
     };
 
+    function link (resource, rel) {
+        for (var i = 0; i < resource.links.length; i++) {
+            if (rel == resource.links[i].rel) {
+                return resource.links[i].href;
+            }
+        }
+        return null;
+    }
 
     return {
         log: log,
@@ -226,7 +236,8 @@ define(function () {
         getCookie: getCookie,
         tooltips: tooltips,
         values: values,
-        deparam: deparam
+        deparam: deparam,
+        link: link
     }
 
 });
