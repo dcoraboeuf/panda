@@ -28,15 +28,10 @@
                 <input type="email" id="email" name="email" value="${account.email?html}" size="40" maxlength="80" required="required" />
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label" for="roleName"><@lh key="account.role" /></label>
-            <div class="controls">
-                <select id="roleName" name="roleName">
-                    <option value="ROLE_USER"><@lh key="account.role.ROLE_USER"/></option>
-                    <option value="ROLE_ADMIN"><@lh key="account.role.ROLE_ADMIN"/></option>
-                </select>
-            </div>
-        </div>
+        <@form_select name="roleName" label=loc('account.role')>
+            <@form_select_option value="ROLE_USER" text=loc('account.role.ROLE_USER') selection=account.roleName />
+            <@form_select_option value="ROLE_ADMIN" text=loc('account.role.ROLE_ADMIN') selection=account.roleName />
+        </@form_select>
         <div class="control-group">
             <div class="controls">
                 <button type="submit" class="btn btn-warning"><@lh key="general.modify" /></button>
