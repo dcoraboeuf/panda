@@ -51,6 +51,7 @@
         <module>panda-backend</module>
         <module>panda-service</module>
         <module>panda-dao</module>
+        <module>panda-testutils</module>
     </modules>
 
 	<dependencyManagement>

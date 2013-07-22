@@ -4,15 +4,18 @@ define(['common', 'handlebars'], function (common, handlebars) {
         return key.loc();
     });
 
-    Handlebars.registerHelper('link', function (rel, options) {
-        for (var i = 0; i < this.links.length; i++) {
-            if (rel == this.links[i].rel) {
-                return this.links[i].href;
+    Handlebars.registerHelper(
+        'link',
+        function (rel, options) {
+            var href = common.link(this, rel);
+            if (href != null) {
+                return href;
+            } else {
+                common.log('render')('"{0}" rel not found', rel);
+                return '';
             }
         }
-        common.log('render')('"{0}" rel not found', rel);
-        return '';
-    });
+    );
 
     function withTemplate(templateId, templateFn) {
         require(['text!template/' + templateId + '.html'], function (rawTemplate) {
