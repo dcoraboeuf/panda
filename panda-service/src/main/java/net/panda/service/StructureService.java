@@ -1,5 +1,6 @@
 package net.panda.service;
 
+import net.panda.core.model.ParameterSummary;
 import net.panda.core.model.PipelineCreationForm;
 import net.panda.core.model.PipelineSummary;
 
@@ -14,4 +15,6 @@ public interface StructureService {
     PipelineSummary createPipeline(PipelineCreationForm form);
 
     PipelineSummary getPipelineByName(String name);
+
+    List<ParameterSummary> getPipelineParameters(int pipeline);
 }

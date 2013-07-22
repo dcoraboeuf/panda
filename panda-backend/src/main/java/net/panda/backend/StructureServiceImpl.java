@@ -2,8 +2,11 @@ package net.panda.backend;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import net.panda.backend.dao.ParameterDao;
 import net.panda.backend.dao.PipelineDao;
+import net.panda.backend.dao.model.TParameter;
 import net.panda.backend.dao.model.TPipeline;
+import net.panda.core.model.ParameterSummary;
 import net.panda.core.model.PipelineCreationForm;
 import net.panda.core.model.PipelineSummary;
 import net.panda.core.security.SecurityRoles;
@@ -19,6 +22,7 @@ import java.util.List;
 public class StructureServiceImpl implements StructureService {
 
     private final PipelineDao pipelineDao;
+    private final ParameterDao parameterDao;
     private final Function<TPipeline, PipelineSummary> pipelineSummaryFunction = new Function<TPipeline, PipelineSummary>() {
         @Override
         public PipelineSummary apply(TPipeline t) {
@@ -31,8 +35,9 @@ public class StructureServiceImpl implements StructureService {
     };
 
     @Autowired
-    public StructureServiceImpl(PipelineDao pipelineDao) {
+    public StructureServiceImpl(PipelineDao pipelineDao, ParameterDao parameterDao) {
         this.pipelineDao = pipelineDao;
+        this.parameterDao = parameterDao;
     }
 
     @Override
@@ -62,5 +67,26 @@ public class StructureServiceImpl implements StructureService {
     public PipelineSummary createPipeline(PipelineCreationForm form) {
         int id = pipelineDao.create(form.getName(), form.getDescription());
         return getPipeline(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ParameterSummary> getPipelineParameters(int pipeline) {
+        return Lists.transform(
+                parameterDao.findByPipeline(pipeline),
+                new Function<TParameter, ParameterSummary>() {
+
+                    @Override
+                    public ParameterSummary apply(TParameter t) {
+                        return new ParameterSummary(
+                                t.getId(),
+                                t.getName(),
+                                t.getDescription(),
+                                t.getDefaultValue(),
+                                t.isOverriddable()
+                        );
+                    }
+                }
+        );
     }
 }
