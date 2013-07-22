@@ -436,3 +436,25 @@ pipeline.stages
 pipeline.stages.description
     en -> List of stages for this pipeline.
     fr -> Définition des niveaux pour ce pipeline.
+
+[parameter]
+
+pipeline.parameter.create
+    en -> Add a parameter
+    fr -> Ajouter un paramètre
+
+parameter.name
+    en -> Parameter name
+    fr -> Nom du paramètre
+
+parameter.description
+    en -> Description
+    fr -> Description
+
+parameter.defaultValue
+    en -> Default value
+    fr -> Valeur par défaut
+
+parameter.overriddable
+    en -> Can be overridden?
+    fr -> Peut être surchargé\u00a0 ?

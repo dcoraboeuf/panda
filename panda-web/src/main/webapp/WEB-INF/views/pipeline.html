@@ -3,10 +3,11 @@
 <@layout_std
     page="pipeline"
     title=pipeline.name?html
-    noscript=true
     breadcrumbs={
         loc("home"): ""
     }>
+
+    <input id="pipeline-id" type="hidden" value="${pipeline.id?c}" />
 
     <@title value=pipeline.name description=pipeline.description />
 
@@ -25,6 +26,9 @@
                     dynamic-controller="pipeline-parameter-list"
                     dynamic-pipeline-id="${pipeline.id?c}"
                     ></div>
+                <#if secGrant('PIPELINE', pipeline.id, 'CONFIGURE')>
+                    <button id="pipeline-parameter-create" type="button" class="btn"><@lh key="pipeline.parameter.create" /></button>
+                </#if>
             </@section>
         </div>
         <div class="span4">
