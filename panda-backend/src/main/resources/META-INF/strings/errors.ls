@@ -13,3 +13,7 @@ net.panda.backend.exceptions.PipelineAlreadyExistException
 net.panda.backend.exceptions.PipelineNameNotFoundException
     en -> [E-004] Cannot find pipeline with name "{0}".
     fr -> [E-004] Impossible de trouver le pipeline de nom "{0}".
+
+net.panda.backend.exceptions.ParameterNameAlreadyExistException
+    en -> [E-005] Parameter "{0}" is already defined.
+    fr -> [E-005] La paramètre "{0}" est déjà défini.

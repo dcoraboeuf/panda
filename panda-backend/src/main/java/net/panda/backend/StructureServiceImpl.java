@@ -6,6 +6,7 @@ import net.panda.backend.dao.ParameterDao;
 import net.panda.backend.dao.PipelineDao;
 import net.panda.backend.dao.model.TParameter;
 import net.panda.backend.dao.model.TPipeline;
+import net.panda.core.model.ParameterCreationForm;
 import net.panda.core.model.ParameterSummary;
 import net.panda.core.model.PipelineCreationForm;
 import net.panda.core.model.PipelineSummary;
@@ -30,6 +31,19 @@ public class StructureServiceImpl implements StructureService {
                     t.getId(),
                     t.getName(),
                     t.getDescription()
+            );
+        }
+    };
+    private final Function<TParameter, ParameterSummary> parameterSummaryFunction = new Function<TParameter, ParameterSummary>() {
+
+        @Override
+        public ParameterSummary apply(TParameter t) {
+            return new ParameterSummary(
+                    t.getId(),
+                    t.getName(),
+                    t.getDescription(),
+                    t.getDefaultValue(),
+                    t.isOverriddable()
             );
         }
     };
@@ -74,19 +88,28 @@ public class StructureServiceImpl implements StructureService {
     public List<ParameterSummary> getPipelineParameters(int pipeline) {
         return Lists.transform(
                 parameterDao.findByPipeline(pipeline),
-                new Function<TParameter, ParameterSummary>() {
+                parameterSummaryFunction
+        );
+    }
 
-                    @Override
-                    public ParameterSummary apply(TParameter t) {
-                        return new ParameterSummary(
-                                t.getId(),
-                                t.getName(),
-                                t.getDescription(),
-                                t.getDefaultValue(),
-                                t.isOverriddable()
-                        );
-                    }
-                }
+    @Override
+    @Transactional(readOnly = true)
+    public ParameterSummary getPipelineParameter(int id) {
+        return parameterSummaryFunction.apply(parameterDao.getById(id));
+    }
+
+    @Override
+    @Transactional
+    @Secured(SecurityRoles.ADMINISTRATOR)
+    public ParameterSummary createParameter(int pipeline, ParameterCreationForm form) {
+        return getPipelineParameter(
+                parameterDao.create(
+                        pipeline,
+                        form.getName(),
+                        form.getDescription(),
+                        form.getDefaultValue(),
+                        form.isOverriddable()
+                )
         );
     }
 }

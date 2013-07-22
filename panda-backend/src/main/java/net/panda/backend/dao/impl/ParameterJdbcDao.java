@@ -2,8 +2,10 @@ package net.panda.backend.dao.impl;
 
 import net.panda.backend.dao.ParameterDao;
 import net.panda.backend.dao.model.TParameter;
+import net.panda.backend.exceptions.ParameterNameAlreadyExistException;
 import net.panda.dao.AbstractJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,7 @@ public class ParameterJdbcDao extends AbstractJdbcDao implements ParameterDao {
                     rs.getInt("pipeline"),
                     rs.getString("name"),
                     rs.getString("description"),
-                    rs.getString("defaultValue"),
+                    rs.getString("default_value"),
                     rs.getBoolean("overriddable")
             );
         }
@@ -39,9 +41,36 @@ public class ParameterJdbcDao extends AbstractJdbcDao implements ParameterDao {
     @Transactional(readOnly = true)
     public List<TParameter> findByPipeline(int pipeline) {
         return getNamedParameterJdbcTemplate().query(
-                "SELECT * FROM PARAMETER WHERE PIPELINE = :pipeline ORDER BY NAME ASC",
+                SQL.PARAMETER_BY_PIPELINE,
                 params("pipeline", pipeline),
                 parameterRowMapper
         );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TParameter getById(int id) {
+        return getNamedParameterJdbcTemplate().queryForObject(
+                SQL.PARAMETER_BY_ID,
+                params("id", id),
+                parameterRowMapper
+        );
+    }
+
+    @Override
+    @Transactional
+    public int create(int pipeline, String name, String description, String defaultValue, boolean overriddable) {
+        try {
+            return dbCreate(
+                    SQL.PARAMETER_CREATE,
+                    params("pipeline", pipeline)
+                            .addValue("name", name)
+                            .addValue("description", description)
+                            .addValue("defaultValue", defaultValue)
+                            .addValue("overriddable", overriddable)
+            );
+        } catch (DuplicateKeyException ex) {
+            throw new ParameterNameAlreadyExistException(name);
+        }
     }
 }

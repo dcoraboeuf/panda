@@ -2,6 +2,7 @@ package net.panda.web.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import net.panda.core.model.ParameterCreationForm;
 import net.panda.core.model.ParameterSummary;
 import net.panda.core.model.PipelineCreationForm;
 import net.panda.core.model.PipelineSummary;
@@ -32,7 +33,7 @@ public class UIController extends AbstractUIController {
                     .withLink(linkTo(methodOn(GUIController.class).pipelineGet(o.getName())).withRel(Resource.REL_GUI));
         }
     };
-    private final Function<ParameterSummary,Resource<ParameterSummary>> parameterSummaryResourceStubFn = new Function<ParameterSummary, Resource<ParameterSummary>>() {
+    private final Function<ParameterSummary, Resource<ParameterSummary>> parameterSummaryResourceStubFn = new Function<ParameterSummary, Resource<ParameterSummary>>() {
 
         @Override
         public Resource<ParameterSummary> apply(ParameterSummary o) {
@@ -88,6 +89,15 @@ public class UIController extends AbstractUIController {
         return Lists.transform(
                 structureService.getPipelineParameters(pipeline),
                 parameterSummaryResourceStubFn
+        );
+    }
+
+    @RequestMapping(value = "/pipeline/{pipeline}/parameter", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Resource<ParameterSummary> pipelineParameterCreate(@PathVariable int pipeline, @RequestBody ParameterCreationForm form) {
+        return parameterSummaryResourceStubFn.apply(
+                structureService.createParameter(pipeline, form)
         );
     }
 }

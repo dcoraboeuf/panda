@@ -45,4 +45,12 @@ public interface SQL {
     String ACCOUNT_CHANGE_EMAIL = "UPDATE ACCOUNTS SET EMAIL = :email WHERE ID = :id AND MODE = 'builtin' AND PASSWORD = :password";
 
     String ACCOUNT_CHANGE_LOCALE = "UPDATE ACCOUNTS SET LOCALE = :locale WHERE ID = :id";
+
+    // Parameters
+
+    String PARAMETER_BY_PIPELINE = "SELECT * FROM PARAMETER WHERE PIPELINE = :pipeline ORDER BY NAME ASC";
+
+    String PARAMETER_BY_ID = "SELECT * FROM PARAMETER WHERE ID = :id";
+
+    String PARAMETER_CREATE = "INSERT INTO PARAMETER (PIPELINE, NAME, DESCRIPTION, DEFAULT_VALUE, OVERRIDDABLE) VALUES (:pipeline, :name, :description, :defaultValue, :overriddable)";
 }
