@@ -45,5 +45,45 @@ Several points must be noted here:
   * automatic
   * custom trigger
 
+Once all the stages of an instance have been run, the instance itself is marked as complete.
+
+## Instance compatibility with the pipeline
+
+Instances are created, run and completed. It may be important to keep their definition and their result for history and investigation reasons.
+
+In the meantime, it is likely that the pipeline (i.e. the definition the instances are spawn from) will also be adapted: parameters, branches, stages, jobs...
+
+How running, idle and completed instances should behave when their associated pipeline is adapted?
+
+The general idea is that an instance, once spawned from a pipeline, is _almost_ independent of it.
+
+At any time, instances are associated with:
+* a set of parameters
+* a branch
+* a list of stages & jobs that have been run
+* a current stage & a list of current jobs
+
+When a decision has to be made, it is only about a _next stage_ to select. Only at this time do we need to refer to the pipeline definition. In any other case, for _past_ history, the instance can keep its state independently on the pipeline. This state is defined by copying the definition from the pipeline, and by not keeping any live reference to it.
+
+If a pipeline defines stages A -> B -> C and an existing instance has already run A and B, when the pipeline manager removes the B stage, the instance keeps the fact that B has been run for it.
+
+When an instance is selected by the instance runner to be run, the next stage to run may be impossible to compute because of an inconsistent state between the instance and the pipeline. In the previous example, the instance cannot run C after B, because the pipeline now defines only A -> C, without any reference to B. In such case, the instance would be marked as Complete and its status would be Inconsistent.
+
+When an instance is complete, it retains for ever its complete state and its last status, independently of any change at pipeline level.
+
+The only way that an instance may disappear completely is when the pipeline itself is removed. Such an operation has dramatic effects and is allowed only to administrators.
+
+# Authorizations
+
+Public access in read-only mode is generally granted in Panda, for all pipelines & associated instances. One user must be authenticated and granted with some authorizations before doing anything.
+
+Main authorization levels are:
+* Administrator -> can do anything
+* Manager -> granted at pipeline level, can manage the definition of the pipeline (branches, parameters, states, jobs...)
+* Executor -> granted at pipeline level, can trigger the creation of instances and their executions.
+* Promoter -> granted at stage level, can trigger the execution of a stage for an existing instance
+
+Note that automatic processes like triggers for instances or stages would always be executed with Executor rights.
+
 ---
 (1) Probably a temporary name for this project... The idea came after a discussion - maybe an explanation could come later.
