@@ -2,6 +2,7 @@ package net.panda.web.controller;
 
 import net.panda.core.model.PipelineCreationForm;
 import net.panda.core.model.PipelineSummary;
+import net.panda.core.security.SecurityUtils;
 import net.panda.service.StructureService;
 import net.panda.web.resource.Resource;
 import net.panda.web.support.ErrorHandler;
@@ -25,13 +26,15 @@ public class UIControllerTest {
     private ErrorHandler errorHandler;
     private Strings strings;
     private StructureService structureService;
+    private SecurityUtils securityUtils;
 
     @Before
     public void before() {
         errorHandler = mock(ErrorHandler.class);
         strings = mock(Strings.class);
         structureService = mock(StructureService.class);
-        controller = new UIController(errorHandler, strings, structureService);
+        securityUtils = mock(SecurityUtils.class);
+        controller = new UIController(errorHandler, strings, structureService, securityUtils);
         // Current request
         MockHttpServletRequest request = new MockHttpServletRequest();
         ServletRequestAttributes attributes = new ServletRequestAttributes(request);

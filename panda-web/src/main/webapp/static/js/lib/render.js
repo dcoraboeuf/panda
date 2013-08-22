@@ -17,6 +17,17 @@ define(['common', 'handlebars'], function (common, handlebars) {
         }
     );
 
+    Handlebars.registerHelper(
+        'granted',
+        function (action, options) {
+            if (this.actions.indexOf(action) >= 0) {
+                return options.fn(this);
+            } else {
+                return '';
+            }
+        }
+    );
+
     function withTemplate(templateId, templateFn) {
         require(['text!template/' + templateId + '.html'], function (rawTemplate) {
             templateFn(Handlebars.compile(rawTemplate));

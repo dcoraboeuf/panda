@@ -6,6 +6,7 @@ import net.panda.core.model.ParameterCreationForm;
 import net.panda.core.model.ParameterSummary;
 import net.panda.core.model.PipelineCreationForm;
 import net.panda.core.model.PipelineSummary;
+import net.panda.core.security.SecurityUtils;
 import net.panda.service.StructureService;
 import net.panda.web.resource.Resource;
 import net.panda.web.support.AbstractUIController;
@@ -25,6 +26,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class UIController extends AbstractUIController {
 
     private final StructureService structureService;
+    private final SecurityUtils securityUtils;
     private final Function<PipelineSummary, Resource<PipelineSummary>> pipelineSummaryResourceFn = new Function<PipelineSummary, Resource<PipelineSummary>>() {
         @Override
         public Resource<PipelineSummary> apply(PipelineSummary o) {
@@ -33,19 +35,30 @@ public class UIController extends AbstractUIController {
                     .withLink(linkTo(methodOn(GUIController.class).pipelineGet(o.getName())).withRel(Resource.REL_GUI));
         }
     };
-    private final Function<ParameterSummary, Resource<ParameterSummary>> parameterSummaryResourceStubFn = new Function<ParameterSummary, Resource<ParameterSummary>>() {
+    private final Function<Integer, Function<ParameterSummary, Resource<ParameterSummary>>> parameterSummaryResourceStubFn =
+            new Function<Integer, Function<ParameterSummary, Resource<ParameterSummary>>>() {
 
-        @Override
-        public Resource<ParameterSummary> apply(ParameterSummary o) {
-            return new Resource<>(o);
-            // TODO Link to itself
-        }
-    };
+                @Override
+                public Function<ParameterSummary, Resource<ParameterSummary>> apply(final Integer pipelineId) {
+                    return new Function<ParameterSummary, Resource<ParameterSummary>>() {
+
+                        @Override
+                        public Resource<ParameterSummary> apply(ParameterSummary o) {
+                            boolean granted = securityUtils.isGranted("PIPELINE", pipelineId, "UPDATE");
+                            return new Resource<>(o)
+                                    .withUpdate(granted)
+                                    .withDelete(granted);
+                            // TODO Link to itself
+                        }
+                    };
+                }
+            };
 
     @Autowired
-    public UIController(ErrorHandler errorHandler, Strings strings, StructureService structureService) {
+    public UIController(ErrorHandler errorHandler, Strings strings, StructureService structureService, SecurityUtils securityUtils) {
         super(errorHandler, strings);
         this.structureService = structureService;
+        this.securityUtils = securityUtils;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -88,7 +101,7 @@ public class UIController extends AbstractUIController {
     List<Resource<ParameterSummary>> pipelineParameterList(@PathVariable int pipeline) {
         return Lists.transform(
                 structureService.getPipelineParameters(pipeline),
-                parameterSummaryResourceStubFn
+                parameterSummaryResourceStubFn.apply(pipeline)
         );
     }
 
@@ -96,7 +109,7 @@ public class UIController extends AbstractUIController {
     public
     @ResponseBody
     Resource<ParameterSummary> pipelineParameterCreate(@PathVariable int pipeline, @RequestBody ParameterCreationForm form) {
-        return parameterSummaryResourceStubFn.apply(
+        return parameterSummaryResourceStubFn.apply(pipeline).apply(
                 structureService.createParameter(pipeline, form)
         );
     }
