@@ -138,6 +138,25 @@ public class UIController extends AbstractUIController {
         return summary;
     }
 
+    /**
+     * Gets the list of authorizations for a pipeline
+     */
+    @RequestMapping(value = "/pipeline/{pipeline}/authorization", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Resource<PipelineAuthorization>> pipelineAuthorizationList(@PathVariable int pipeline) {
+        return Lists.transform(
+                structureService.getPipelineAuthorizations(pipeline),
+                new Function<PipelineAuthorization, Resource<PipelineAuthorization>>() {
+
+                    @Override
+                    public Resource<PipelineAuthorization> apply(PipelineAuthorization o) {
+                        return new Resource<>(o);
+                    }
+                }
+        );
+    }
+
     @RequestMapping(value = "/pipeline/{pipeline}/authorization/{account}/{role}", method = RequestMethod.PUT)
     public
     @ResponseBody

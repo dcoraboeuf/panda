@@ -49,7 +49,12 @@
         <#if secGrant('PIPELINE', pipeline.id, 'UPDATE')>
             <div class="${span}">
                 <@section title=loc('pipeline.authorizations') description=loc('pipeline.authorizations.description')>
-                    TODO Authorizations
+                    <div
+                        id="pipeline-authorization-list"
+                        class="dynamic"
+                        dynamic-controller="pipeline-authorization-list"
+                        dynamic-pipeline-id="${pipeline.id?c}"
+                        ></div>
                     <button id="pipeline-authorization-create" type="button" class="btn"><@lh key="pipeline.authorization.create" /></button>
                 </@section>
             </div>

@@ -3,11 +3,14 @@ package net.panda.backend;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import net.panda.backend.dao.ParameterDao;
+import net.panda.backend.dao.PipelineAuthorizationDao;
 import net.panda.backend.dao.PipelineDao;
 import net.panda.backend.dao.model.TParameter;
 import net.panda.backend.dao.model.TPipeline;
+import net.panda.backend.dao.model.TPipelineAuthorization;
 import net.panda.core.model.*;
 import net.panda.core.security.SecurityRoles;
+import net.panda.service.AccountService;
 import net.panda.service.StructureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -19,8 +22,10 @@ import java.util.List;
 @Service
 public class StructureServiceImpl implements StructureService {
 
+    private final AccountService accountService;
     private final PipelineDao pipelineDao;
     private final ParameterDao parameterDao;
+    private final PipelineAuthorizationDao pipelineAuthorizationDao;
     private final Function<TPipeline, PipelineSummary> pipelineSummaryFunction = new Function<TPipeline, PipelineSummary>() {
         @Override
         public PipelineSummary apply(TPipeline t) {
@@ -46,9 +51,11 @@ public class StructureServiceImpl implements StructureService {
     };
 
     @Autowired
-    public StructureServiceImpl(PipelineDao pipelineDao, ParameterDao parameterDao) {
+    public StructureServiceImpl(AccountService accountService, PipelineDao pipelineDao, ParameterDao parameterDao, PipelineAuthorizationDao pipelineAuthorizationDao) {
+        this.accountService = accountService;
         this.pipelineDao = pipelineDao;
         this.parameterDao = parameterDao;
+        this.pipelineAuthorizationDao = pipelineAuthorizationDao;
     }
 
     @Override
@@ -136,5 +143,23 @@ public class StructureServiceImpl implements StructureService {
     @Secured(SecurityRoles.ADMINISTRATOR)
     public Ack updatePipelineAuthorization(int pipeline, int account, PipelineRole role) {
         return parameterDao.updatePipelineAuthorization(pipeline, account, role);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PipelineAuthorization> getPipelineAuthorizations(int pipeline) {
+        return Lists.transform(
+                pipelineAuthorizationDao.findByPipeline(pipeline),
+                new Function<TPipelineAuthorization, PipelineAuthorization>() {
+
+                    @Override
+                    public PipelineAuthorization apply(TPipelineAuthorization o) {
+                        return new PipelineAuthorization(
+                                accountService.getAccountSummary(o.getAccount()),
+                                o.getRole()
+                        );
+                    }
+                }
+        );
     }
 }

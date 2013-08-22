@@ -44,7 +44,7 @@ define(['dialog', 'jquery', 'ajax', 'dynamic'], function(dialog, $, ajax, dynami
                                 config.form.find('#authorization-role').val()
                             ),
                             successFn: function () {
-                                // FIXME Reloads list of authorizations
+                                dynamic.reloadSection('pipeline-authorization-list');
                             }
                         })
                     }

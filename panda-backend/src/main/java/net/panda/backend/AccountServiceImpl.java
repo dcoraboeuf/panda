@@ -44,6 +44,12 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
             }
         }
     };
+    private final Function<TAccount, AccountSummary> accountSummaryFn = new Function<TAccount, AccountSummary>() {
+        @Override
+        public AccountSummary apply(TAccount t) {
+            return new AccountSummary(t.getId(), t.getName(), t.getFullName());
+        }
+    };
 
     @Autowired
     public AccountServiceImpl(ValidatorService validatorService, Strings strings, AccountDao accountDao) {
@@ -77,6 +83,14 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
     @Secured(SecurityRoles.ADMINISTRATOR)
     public Account getAccount(int id) {
         return accountFunction.apply(
+                accountDao.getByID(id)
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AccountSummary getAccountSummary(int id) {
+        return accountSummaryFn.apply(
                 accountDao.getByID(id)
         );
     }
@@ -211,12 +225,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
     public List<AccountSummary> getUserAccounts() {
         return Lists.transform(
                 accountDao.getUserAccounts(),
-                new Function<TAccount, AccountSummary>() {
-                    @Override
-                    public AccountSummary apply(TAccount t) {
-                        return new AccountSummary(t.getId(), t.getName(), t.getFullName());
-                    }
-                }
+                accountSummaryFn
         );
     }
 }

@@ -25,4 +25,6 @@ public interface StructureService {
     void deleteParameter(int pipeline, int parameter);
 
     Ack updatePipelineAuthorization(int pipeline, int account, PipelineRole role);
+
+    List<PipelineAuthorization> getPipelineAuthorizations(int pipeline);
 }

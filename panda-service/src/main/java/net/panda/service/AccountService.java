@@ -31,4 +31,6 @@ public interface AccountService {
     Ack changeLanguage(int id, String lang);
 
     List<AccountSummary> getUserAccounts();
+
+    AccountSummary getAccountSummary(int account);
 }
