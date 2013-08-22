@@ -443,6 +443,10 @@ pipeline.parameter.create
     en -> Add a parameter
     fr -> Ajouter un paramètre
 
+pipeline.parameter.update
+    en -> Update parameter
+    fr -> Mettre à jour le paramètre
+
 parameter.name
     en -> Parameter name
     fr -> Nom du paramètre

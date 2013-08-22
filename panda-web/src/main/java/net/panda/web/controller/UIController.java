@@ -2,10 +2,7 @@ package net.panda.web.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import net.panda.core.model.ParameterCreationForm;
-import net.panda.core.model.ParameterSummary;
-import net.panda.core.model.PipelineCreationForm;
-import net.panda.core.model.PipelineSummary;
+import net.panda.core.model.*;
 import net.panda.core.security.SecurityUtils;
 import net.panda.service.StructureService;
 import net.panda.web.resource.Resource;
@@ -111,6 +108,24 @@ public class UIController extends AbstractUIController {
     Resource<ParameterSummary> pipelineParameterCreate(@PathVariable int pipeline, @RequestBody ParameterCreationForm form) {
         return parameterSummaryResourceStubFn.apply(pipeline).apply(
                 structureService.createParameter(pipeline, form)
+        );
+    }
+
+    @RequestMapping(value = "/pipeline/{pipeline}/parameter/{parameter}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Resource<ParameterSummary> pipelineParameterGet(@PathVariable int pipeline, @PathVariable int parameter) {
+        return parameterSummaryResourceStubFn.apply(pipeline).apply(
+                structureService.getPipelineParameter(parameter)
+        );
+    }
+
+    @RequestMapping(value = "/pipeline/{pipeline}/parameter/{parameter}", method = RequestMethod.PUT)
+    public
+    @ResponseBody
+    Resource<ParameterSummary> pipelineParameterUpdate(@PathVariable int pipeline, @PathVariable int parameter, @RequestBody ParameterUpdateForm form) {
+        return parameterSummaryResourceStubFn.apply(pipeline).apply(
+                structureService.updateParameter(pipeline, parameter, form)
         );
     }
 }

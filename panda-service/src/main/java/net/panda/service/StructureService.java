@@ -1,9 +1,6 @@
 package net.panda.service;
 
-import net.panda.core.model.ParameterCreationForm;
-import net.panda.core.model.ParameterSummary;
-import net.panda.core.model.PipelineCreationForm;
-import net.panda.core.model.PipelineSummary;
+import net.panda.core.model.*;
 
 import java.util.List;
 
@@ -22,4 +19,6 @@ public interface StructureService {
     ParameterSummary getPipelineParameter(int id);
 
     ParameterSummary createParameter(int pipeline, ParameterCreationForm form);
+
+    ParameterSummary updateParameter(int pipeline, int parameter, ParameterUpdateForm form);
 }

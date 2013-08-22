@@ -1,0 +1,26 @@
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="parameter-name">{{loc 'parameter.name'}}</label>
+        <div class="controls">
+            <input type="text" id="parameter-name" value="" size="40" maxlength="80" required="required" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="parameter-description">{{loc 'parameter.description'}}</label>
+        <div class="controls">
+            <textarea id="parameter-description" columns="40" maxlength="1000" rows="4"></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="parameter-default-value">{{loc 'parameter.defaultValue'}}</label>
+        <div class="controls">
+            <input type="text" id="parameter-default-value" value="" size="40" maxlength="200" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="parameter-overriddable">{{loc 'parameter.overriddable'}}</label>
+        <div class="controls">
+            <input type="checkbox" id="parameter-overriddable" />
+        </div>
+    </div>
+</form>

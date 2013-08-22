@@ -53,4 +53,6 @@ public interface SQL {
     String PARAMETER_BY_ID = "SELECT * FROM PARAMETER WHERE ID = :id";
 
     String PARAMETER_CREATE = "INSERT INTO PARAMETER (PIPELINE, NAME, DESCRIPTION, DEFAULT_VALUE, OVERRIDDABLE) VALUES (:pipeline, :name, :description, :defaultValue, :overriddable)";
+
+    String PARAMETER_UPDATE = "UPDATE PARAMETER SET NAME = :name, DESCRIPTION = :description, DEFAULT_VALUE = :defaultValue, OVERRIDDABLE = :overriddable WHERE ID = :parameter";
 }

@@ -3,6 +3,7 @@ package net.panda.backend.dao.impl;
 import net.panda.backend.dao.ParameterDao;
 import net.panda.backend.dao.model.TParameter;
 import net.panda.backend.exceptions.ParameterNameAlreadyExistException;
+import net.panda.core.model.Ack;
 import net.panda.dao.AbstractJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -72,5 +73,20 @@ public class ParameterJdbcDao extends AbstractJdbcDao implements ParameterDao {
         } catch (DuplicateKeyException ex) {
             throw new ParameterNameAlreadyExistException(name);
         }
+    }
+
+    @Override
+    @Transactional
+    public Ack update(int parameter, String name, String description, String defaultValue, boolean overriddable) {
+        return Ack.one(
+                getNamedParameterJdbcTemplate().update(
+                        SQL.PARAMETER_UPDATE,
+                        params("parameter", parameter)
+                                .addValue("name", name)
+                                .addValue("description", description)
+                                .addValue("defaultValue", defaultValue)
+                                .addValue("overriddable", overriddable)
+                )
+        );
     }
 }

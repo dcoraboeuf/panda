@@ -6,10 +6,7 @@ import net.panda.backend.dao.ParameterDao;
 import net.panda.backend.dao.PipelineDao;
 import net.panda.backend.dao.model.TParameter;
 import net.panda.backend.dao.model.TPipeline;
-import net.panda.core.model.ParameterCreationForm;
-import net.panda.core.model.ParameterSummary;
-import net.panda.core.model.PipelineCreationForm;
-import net.panda.core.model.PipelineSummary;
+import net.panda.core.model.*;
 import net.panda.core.security.SecurityRoles;
 import net.panda.service.StructureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,5 +108,19 @@ public class StructureServiceImpl implements StructureService {
                         form.isOverriddable()
                 )
         );
+    }
+
+    @Override
+    @Transactional
+    @Secured(SecurityRoles.ADMINISTRATOR)
+    public ParameterSummary updateParameter(int pipeline, int parameter, ParameterUpdateForm form) {
+        parameterDao.update(
+                parameter,
+                form.getName(),
+                form.getDescription(),
+                form.getDefaultValue(),
+                form.isOverriddable()
+        );
+        return getPipelineParameter(parameter);
     }
 }
