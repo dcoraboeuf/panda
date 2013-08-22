@@ -130,4 +130,11 @@ public class StructureServiceImpl implements StructureService {
     public void deleteParameter(int pipeline, int parameter) {
         parameterDao.delete(parameter);
     }
+
+    @Override
+    @Transactional
+    @Secured(SecurityRoles.ADMINISTRATOR)
+    public Ack updatePipelineAuthorization(int pipeline, int account, PipelineRole role) {
+        return parameterDao.updatePipelineAuthorization(pipeline, account, role);
+    }
 }

@@ -1,0 +1,22 @@
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="authorization-user">{{loc 'pipeline.authorization.user'}}</label>
+        <div class="controls">
+            <select id="authorization-user">
+                {{#accounts}}
+                    <option value="{{data.id}}">{{data.fullName}}</option>
+                {{/accounts}}
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="authorization-role">{{loc 'pipeline.authorization.role'}}</label>
+        <div class="controls">
+            <select id="authorization-role">
+                <option value="PROMOTER">{{loc 'pipeline.authorization.role.PROMOTER'}}</option>
+                <option value="EXECUTOR">{{loc 'pipeline.authorization.role.EXECUTOR'}}</option>
+                <option value="MANAGER">{{loc 'pipeline.authorization.role.MANAGER'}}</option>
+            </select>
+        </div>
+    </div>
+</form>

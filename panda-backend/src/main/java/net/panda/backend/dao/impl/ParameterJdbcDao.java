@@ -4,10 +4,12 @@ import net.panda.backend.dao.ParameterDao;
 import net.panda.backend.dao.model.TParameter;
 import net.panda.backend.exceptions.ParameterNameAlreadyExistException;
 import net.panda.core.model.Ack;
+import net.panda.core.model.PipelineRole;
 import net.panda.dao.AbstractJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,6 +98,24 @@ public class ParameterJdbcDao extends AbstractJdbcDao implements ParameterDao {
         getNamedParameterJdbcTemplate().update(
                 SQL.PARAMETER_DELETE,
                 params("parameter", parameter)
+        );
+    }
+
+    @Override
+    @Transactional
+    public Ack updatePipelineAuthorization(int pipeline, int account, PipelineRole role) {
+        MapSqlParameterSource params = params("pipeline", pipeline).addValue("account", account);
+        // Deleting any previous authorization
+        getNamedParameterJdbcTemplate().update(
+                SQL.PIPELINE_AUTHORIZATION_DELETE,
+                params
+        );
+        // Adds the authorization
+        return Ack.one(
+                getNamedParameterJdbcTemplate().update(
+                        SQL.PIPELINE_AUTHORIZATION_INSERT,
+                        params.addValue("role", role.name())
+                )
         );
     }
 }

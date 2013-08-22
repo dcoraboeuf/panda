@@ -137,4 +137,11 @@ public class UIController extends AbstractUIController {
         structureService.deleteParameter(pipeline, parameter);
         return summary;
     }
+
+    @RequestMapping(value = "/pipeline/{pipeline}/authorization/{account}/{role}", method = RequestMethod.PUT)
+    public
+    @ResponseBody
+    Ack pipelineAuthorizationUpdate(@PathVariable int pipeline, @PathVariable int account, @PathVariable PipelineRole role) {
+        return structureService.updatePipelineAuthorization(pipeline, account, role);
+    }
 }

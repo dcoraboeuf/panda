@@ -466,3 +466,37 @@ parameter.defaultValue
 parameter.overriddable
     en -> Can be overridden?
     fr -> Peut être surchargé\u00a0 ?
+
+[authorizations]
+
+pipeline.authorizations
+    en -> Authorizations
+    fr -> Autorisations
+
+pipeline.authorizations.description
+    en -> List of accounts having access to this pipeline.
+    fr -> Liste des utilisateurs ayant accès à ce pipeline.
+
+pipeline.authorization.create
+    en -> Add an authorization
+    fr -> Ajouter une autorisation
+
+pipeline.authorization.user
+    en -> Account
+    fr -> Utilisateur
+
+pipeline.authorization.role
+    en -> Role
+    fr -> Rôle
+
+pipeline.authorization.role.MANAGER
+    en -> Manager
+    fr -> Gestionnaire
+
+pipeline.authorization.role.EXECUTOR
+    en -> Executor
+    fr -> Exécuteur
+
+pipeline.authorization.role.PROMOTER
+    en -> Promoter
+    fr -> Promoteur

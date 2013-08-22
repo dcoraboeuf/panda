@@ -101,6 +101,15 @@ public class AccountJdbcDao extends AbstractJdbcDao implements AccountDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<TAccount> getUserAccounts() {
+        return getJdbcTemplate().query(
+                SQL.ACCOUNT_USER_LIST,
+                accountRowMapper
+        );
+    }
+
+    @Override
     @Transactional
     public int createAccount(String name, String fullName, String email, String roleName, String mode, String password) {
         try {

@@ -205,4 +205,18 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
     public Ack changeLanguage(int id, String lang) {
         return accountDao.changeLanguage(id, strings.getSupportedLocales().filterForLookup(new Locale(lang)));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AccountSummary> getUserAccounts() {
+        return Lists.transform(
+                accountDao.getUserAccounts(),
+                new Function<TAccount, AccountSummary>() {
+                    @Override
+                    public AccountSummary apply(TAccount t) {
+                        return new AccountSummary(t.getId(), t.getName(), t.getFullName());
+                    }
+                }
+        );
+    }
 }

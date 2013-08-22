@@ -1,10 +1,8 @@
 package net.panda.web.controller;
 
 import com.google.common.base.Function;
-import net.panda.core.model.Account;
-import net.panda.core.model.AccountCreationForm;
-import net.panda.core.model.AccountPasswordResetForm;
-import net.panda.core.model.AccountUpdateForm;
+import com.google.common.collect.Lists;
+import net.panda.core.model.*;
 import net.panda.service.AccountService;
 import net.panda.web.resource.Resource;
 import net.panda.web.support.AbstractUIController;
@@ -13,6 +11,8 @@ import net.sf.jstring.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -40,6 +40,24 @@ public class UIAdminController extends AbstractUIController {
     public UIAdminController(ErrorHandler errorHandler, Strings strings, AccountService accountService) {
         super(errorHandler, strings);
         this.accountService = accountService;
+    }
+
+    /**
+     * List of users
+     */
+    @RequestMapping(value = "/ui/account/user", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Resource<AccountSummary>> accountUsers() {
+        return Lists.transform(
+                accountService.getUserAccounts(),
+                new Function<AccountSummary, Resource<AccountSummary>>() {
+                    @Override
+                    public Resource<AccountSummary> apply(AccountSummary o) {
+                        return new Resource<>(o);
+                    }
+                }
+        );
     }
 
     @RequestMapping(value = "/ui/account/{id}", method = RequestMethod.GET)

@@ -17,8 +17,13 @@
         </div>
     </div>
 
+    <#assign span = "span4" />
+    <#if secGrant('PIPELINE', pipeline.id, 'UPDATE')>
+        <#assign span = "span3" />
+    </#if>
+
     <div class="row-fluid">
-        <div class="span4">
+        <div class="${span}">
             <@section title=loc('pipeline.parameters') description=loc('pipeline.parameters.description')>
                 <div
                     id="pipeline-parameter-list"
@@ -26,21 +31,29 @@
                     dynamic-controller="pipeline-parameter-list"
                     dynamic-pipeline-id="${pipeline.id?c}"
                     ></div>
-                <#if secGrant('PIPELINE', pipeline.id, 'CONFIGURE')>
+                <#if secGrant('PIPELINE', pipeline.id, 'UPDATE')>
                     <button id="pipeline-parameter-create" type="button" class="btn"><@lh key="pipeline.parameter.create" /></button>
                 </#if>
             </@section>
         </div>
-        <div class="span4">
+        <div class="${span}">
             <@section title=loc('pipeline.stages') description=loc('pipeline.stages.description')>
                 TODO Stages
             </@section>
         </div>
-        <div class="span4">
+        <div class="${span}">
             <@section title=loc('pipeline.branches') description=loc('pipeline.branches.description')>
                 TODO Branches
             </@section>
         </div>
+        <#if secGrant('PIPELINE', pipeline.id, 'UPDATE')>
+            <div class="${span}">
+                <@section title=loc('pipeline.authorizations') description=loc('pipeline.authorizations.description')>
+                    TODO Authorizations
+                    <button id="pipeline-authorization-create" type="button" class="btn"><@lh key="pipeline.authorization.create" /></button>
+                </@section>
+            </div>
+        </#if>
     </div>
 
 </@layout_std>

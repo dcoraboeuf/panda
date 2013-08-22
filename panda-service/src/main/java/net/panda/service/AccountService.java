@@ -29,4 +29,6 @@ public interface AccountService {
     Account resetPassword(int id, String password);
 
     Ack changeLanguage(int id, String lang);
+
+    List<AccountSummary> getUserAccounts();
 }
