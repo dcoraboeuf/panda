@@ -14,4 +14,6 @@ public interface ParameterDao {
     int create(int pipeline, String name, String description, String defaultValue, boolean overriddable);
 
     Ack update(int parameter, String name, String description, String defaultValue, boolean overriddable);
+
+    void delete(int parameter);
 }

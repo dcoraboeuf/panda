@@ -22,7 +22,7 @@ define(['render','jquery','common','ajax','dialog','dynamic'], function (render,
                                 defaultValue: $('#parameter-default-value').val(),
                                 overriddable: $('#parameter-overriddable').is(':checked')
                             },
-                            successFn: function (pipeline) {
+                            successFn: function () {
                                 config.closeFn();
                                 dynamic.reloadSection('pipeline-parameter-list');
                             },
@@ -30,6 +30,25 @@ define(['render','jquery','common','ajax','dialog','dynamic'], function (render,
                         });
                     }
                 });
+            }
+        })
+    }
+
+    function deleteParameter (pipelineId, parameterId) {
+        ajax.get({
+            url: 'ui/pipeline/{0}/parameter/{1}'.format(pipelineId, parameterId),
+            successFn: function (parameterResource) {
+                common.confirmAndCall(
+                    'pipeline.parameter.delete'.loc(parameterResource.data.name),
+                    function () {
+                        ajax.del({
+                            url: 'ui/pipeline/{0}/parameter/{1}'.format(pipelineId, parameterId),
+                            successFn: function () {
+                                dynamic.reloadSection('pipeline-parameter-list');
+                            }
+                        });
+                    }
+                )
             }
         })
     }

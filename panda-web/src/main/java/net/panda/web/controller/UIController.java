@@ -128,4 +128,13 @@ public class UIController extends AbstractUIController {
                 structureService.updateParameter(pipeline, parameter, form)
         );
     }
+
+    @RequestMapping(value = "/pipeline/{pipeline}/parameter/{parameter}", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    Resource<ParameterSummary> pipelineParameterDelete(@PathVariable int pipeline, @PathVariable int parameter) {
+        Resource<ParameterSummary> summary = pipelineParameterGet(pipeline, parameter);
+        structureService.deleteParameter(pipeline, parameter);
+        return summary;
+    }
 }

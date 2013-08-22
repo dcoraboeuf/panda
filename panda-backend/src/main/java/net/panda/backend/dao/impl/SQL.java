@@ -55,4 +55,6 @@ public interface SQL {
     String PARAMETER_CREATE = "INSERT INTO PARAMETER (PIPELINE, NAME, DESCRIPTION, DEFAULT_VALUE, OVERRIDDABLE) VALUES (:pipeline, :name, :description, :defaultValue, :overriddable)";
 
     String PARAMETER_UPDATE = "UPDATE PARAMETER SET NAME = :name, DESCRIPTION = :description, DEFAULT_VALUE = :defaultValue, OVERRIDDABLE = :overriddable WHERE ID = :parameter";
+
+    String PARAMETER_DELETE = "DELETE FROM PARAMETER WHERE ID = :parameter";
 }

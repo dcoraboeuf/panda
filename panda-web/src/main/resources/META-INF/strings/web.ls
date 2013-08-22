@@ -447,6 +447,10 @@ pipeline.parameter.update
     en -> Update parameter
     fr -> Mettre à jour le paramètre
 
+pipeline.parameter.delete
+    en -> Are you sure to delete the {0} parameter?
+    fr -> Etes-vous sûr de vouloir supprimer le paramètre {0} ?
+
 parameter.name
     en -> Parameter name
     fr -> Nom du paramètre

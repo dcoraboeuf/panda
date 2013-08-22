@@ -89,4 +89,13 @@ public class ParameterJdbcDao extends AbstractJdbcDao implements ParameterDao {
                 )
         );
     }
+
+    @Override
+    @Transactional
+    public void delete(int parameter) {
+        getNamedParameterJdbcTemplate().update(
+                SQL.PARAMETER_DELETE,
+                params("parameter", parameter)
+        );
+    }
 }

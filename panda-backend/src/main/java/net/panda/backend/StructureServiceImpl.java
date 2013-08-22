@@ -123,4 +123,11 @@ public class StructureServiceImpl implements StructureService {
         );
         return getPipelineParameter(parameter);
     }
+
+    @Override
+    @Transactional
+    @Secured(SecurityRoles.ADMINISTRATOR)
+    public void deleteParameter(int pipeline, int parameter) {
+        parameterDao.delete(parameter);
+    }
 }

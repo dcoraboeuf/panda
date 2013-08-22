@@ -21,4 +21,6 @@ public interface StructureService {
     ParameterSummary createParameter(int pipeline, ParameterCreationForm form);
 
     ParameterSummary updateParameter(int pipeline, int parameter, ParameterUpdateForm form);
+
+    void deleteParameter(int pipeline, int parameter);
 }
