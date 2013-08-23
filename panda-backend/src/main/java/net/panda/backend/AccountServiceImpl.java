@@ -12,6 +12,7 @@ import net.panda.core.security.SecurityRoles;
 import net.panda.core.validation.AccountValidation;
 import net.panda.core.validation.Validations;
 import net.panda.service.AccountService;
+import net.panda.service.security.AdminGrant;
 import net.panda.service.security.PipelineFunction;
 import net.sf.jstring.Strings;
 import org.apache.commons.lang3.StringUtils;
@@ -91,7 +92,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
 
     @Override
     @Transactional(readOnly = true)
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public Account getAccount(int id) {
         return accountFunction.apply(
                 accountDao.getByID(id)
@@ -108,7 +109,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
 
     @Override
     @Transactional(readOnly = true)
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public List<Account> getAccounts() {
         return Lists.transform(
                 accountDao.findAll(),
@@ -118,7 +119,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public Account createAccount(final AccountCreationForm form) {
         // Validation
         validate(form, AccountValidation.class);
@@ -156,14 +157,14 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public void deleteAccount(int id) {
         accountDao.deleteAccount(id);
     }
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public Account updateAccount(int id, AccountUpdateForm form) {
         // Updates the account
         accountDao.updateAccount(
@@ -179,7 +180,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public Ack changePassword(int id, PasswordChangeForm form) {
         // Gets the existing account
         Account account = getAccount(id);
@@ -195,7 +196,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public Ack changeEmail(int id, EmailChangeForm form) {
         // Gets the existing account
         Account account = getAccount(id);
@@ -211,7 +212,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public Account resetPassword(int id, String password) {
         // Gets the existing account
         Account account = getAccount(id);
@@ -226,7 +227,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     public Ack changeLanguage(int id, String lang) {
         return accountDao.changeLanguage(id, strings.getSupportedLocales().filterForLookup(new Locale(lang)));
     }

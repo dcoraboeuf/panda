@@ -8,6 +8,7 @@ import net.panda.service.model.ConfigurationKey;
 import net.panda.service.model.GeneralConfiguration;
 import net.panda.service.model.LDAPConfiguration;
 import net.panda.service.model.MailConfiguration;
+import net.panda.service.security.AdminGrant;
 import net.panda.service.validation.LDAPConfigurationValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -82,7 +83,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     @CacheEvict(value = Caches.CONFIGURATION, key = "'general'")
     public void saveGeneralConfiguration(GeneralConfiguration configuration) {
         String baseUrl = configuration.getBaseUrl();
@@ -94,7 +95,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     @Caching(evict = {
             @CacheEvict(value = Caches.CONFIGURATION, key = "'ldap'"),
             @CacheEvict(value = Caches.LDAP, key = "'0'")
@@ -119,7 +120,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
+    @AdminGrant
     @Caching(evict = {
             @CacheEvict(value = Caches.CONFIGURATION, key = "'mail'"),
             @CacheEvict(value = Caches.MAIL, key = "'0'")
