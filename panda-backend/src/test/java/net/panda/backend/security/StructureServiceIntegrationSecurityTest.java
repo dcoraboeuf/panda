@@ -1,8 +1,11 @@
 package net.panda.backend.security;
 
+import net.panda.core.model.ParameterCreationForm;
+import net.panda.core.model.ParameterSummary;
 import net.panda.core.model.PipelineCreationForm;
 import net.panda.core.model.PipelineSummary;
 import net.panda.service.StructureService;
+import net.panda.service.security.PipelineFunction;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -44,7 +47,7 @@ public class StructureServiceIntegrationSecurityTest extends AbstractSecurityTes
 
 	@Test(expected = AccessDeniedException.class)
 	public void pipeline_create_user_denied() throws Exception {
-		asUser(new Callable<Void>() {
+		asUser().call(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
 				structureService.createPipeline(new PipelineCreationForm("pipeline_user", "Cannot create a pipeline"));
@@ -55,14 +58,30 @@ public class StructureServiceIntegrationSecurityTest extends AbstractSecurityTes
 
 	@Test
 	public void pipeline_create_admin_ok() throws Exception {
-		PipelineSummary pipeline = asAdmin(new Callable<PipelineSummary>() {
-			@Override
-			public PipelineSummary call() throws Exception {
-				return structureService.createPipeline(new PipelineCreationForm("pipeline_admin", "OK"));
-			}
-		});
+		PipelineSummary pipeline = createPipeline("pipeline_admin");
 		assertNotNull(pipeline);
 		assertEquals("pipeline_admin", pipeline.getName());
+	}
+
+	@Test
+	public void pipeline_parameter_create_grant_ok() throws Exception {
+		final PipelineSummary pipeline = createPipeline("pipeline_parameter_create");
+		asUser().withPipelineGrant(pipeline.getId(), PipelineFunction.UPDATE).call(new Callable<ParameterSummary>() {
+			@Override
+			public ParameterSummary call() throws Exception {
+				return structureService.createParameter(pipeline.getId(), new ParameterCreationForm("git_remote",
+						"URL for the Git repository", "", false));
+			}
+		});
+	}
+
+	private PipelineSummary createPipeline(final String name) throws Exception {
+		return asAdmin(new Callable<PipelineSummary>() {
+			@Override
+			public PipelineSummary call() throws Exception {
+				return structureService.createPipeline(new PipelineCreationForm(name, "OK"));
+			}
+		});
 	}
 
 }
