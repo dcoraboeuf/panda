@@ -12,6 +12,9 @@ import net.panda.core.model.*;
 import net.panda.core.security.SecurityRoles;
 import net.panda.service.AccountService;
 import net.panda.service.StructureService;
+import net.panda.service.security.PipelineFunction;
+import net.panda.service.security.PipelineGrant;
+import net.panda.service.security.PipelineGrantId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -104,8 +107,8 @@ public class StructureServiceImpl implements StructureService {
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
-    public ParameterSummary createParameter(int pipeline, ParameterCreationForm form) {
+    @PipelineGrant(PipelineFunction.UPDATE)
+    public ParameterSummary createParameter(@PipelineGrantId int pipeline, ParameterCreationForm form) {
         return getPipelineParameter(
                 parameterDao.create(
                         pipeline,
@@ -119,8 +122,8 @@ public class StructureServiceImpl implements StructureService {
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
-    public ParameterSummary updateParameter(int pipeline, int parameter, ParameterUpdateForm form) {
+    @PipelineGrant(PipelineFunction.UPDATE)
+    public ParameterSummary updateParameter(@PipelineGrantId int pipeline, int parameter, ParameterUpdateForm form) {
         parameterDao.update(
                 parameter,
                 form.getName(),
@@ -133,15 +136,15 @@ public class StructureServiceImpl implements StructureService {
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
-    public void deleteParameter(int pipeline, int parameter) {
+    @PipelineGrant(PipelineFunction.DELETE)
+    public void deleteParameter(@PipelineGrantId int pipeline, int parameter) {
         parameterDao.delete(parameter);
     }
 
     @Override
     @Transactional
-    @Secured(SecurityRoles.ADMINISTRATOR)
-    public Ack updatePipelineAuthorization(int pipeline, int account, PipelineRole role) {
+    @PipelineGrant(PipelineFunction.UPDATE)
+    public Ack updatePipelineAuthorization(@PipelineGrantId int pipeline, int account, PipelineRole role) {
         return parameterDao.updatePipelineAuthorization(pipeline, account, role);
     }
 
