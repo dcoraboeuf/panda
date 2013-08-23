@@ -34,13 +34,22 @@ public class PandaDecisionManager implements AccessDecisionManager {
         // Method to authenticate
         MethodInvocation invocation = (MethodInvocation) object;
         // Checks the grants
-        if (pipelineGranted(invocation)) {
+        if (adminGranted(invocation) || pipelineGranted(invocation)) {
             logger.debug("[grant] Granted after authorization.");
         }
         // No control - anomaly
         else {
             String accessDeniedMessage = String.format("%s is under control but no access could be granted.", invocation.getMethod());
             throw new AccessDeniedException(accessDeniedMessage);
+        }
+    }
+
+    protected boolean adminGranted(MethodInvocation invocation) {
+        AdminGrant grant = getAnnotation(invocation, AdminGrant.class);
+        if (grant != null) {
+            return checkAdminGrant();
+        } else {
+            return false;
         }
     }
 
@@ -52,6 +61,10 @@ public class PandaDecisionManager implements AccessDecisionManager {
         } else {
             return false;
         }
+    }
+
+    protected boolean checkAdminGrant() {
+        return securityUtils.isAdmin();
     }
 
     protected boolean checkPipelineGrant(int pipeline, PipelineFunction fn) {

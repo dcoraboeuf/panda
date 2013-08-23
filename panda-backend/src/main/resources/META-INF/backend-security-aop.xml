@@ -9,6 +9,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <global-method-security access-decision-manager-ref="pandaDecisionManager">
         <protect-pointcut expression="execution(@net.panda.service.security.PipelineGrant * net.panda.backend.*.*(..))" access="pipeline" />
+        <protect-pointcut expression="execution(@net.panda.service.security.AdminGrant * net.panda.backend.*.*(..))" access="admin" />
     </global-method-security>
 
 </beans:beans>
