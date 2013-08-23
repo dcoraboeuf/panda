@@ -99,8 +99,8 @@ public class SecurityUtilsImpl implements SecurityUtils {
 
     @Override
     public boolean isGranted(String category, int id, String action) {
-        // TODO Fine grained authorizations
-        return isAdmin();
+        Account account = getCurrentAccount();
+        return account != null && account.isGranted(category, id, action);
     }
 
     @Override

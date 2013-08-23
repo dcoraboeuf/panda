@@ -8,4 +8,5 @@ public interface PipelineAuthorizationDao {
 
     List<TPipelineAuthorization> findByPipeline(int pipeline);
 
+    List<TPipelineAuthorization> findByAccount(int account);
 }

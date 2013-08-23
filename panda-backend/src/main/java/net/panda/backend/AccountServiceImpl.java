@@ -4,12 +4,15 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import net.panda.backend.dao.AccountDao;
+import net.panda.backend.dao.PipelineAuthorizationDao;
 import net.panda.backend.dao.model.TAccount;
+import net.panda.backend.dao.model.TPipelineAuthorization;
 import net.panda.core.model.*;
 import net.panda.core.security.SecurityRoles;
 import net.panda.core.validation.AccountValidation;
 import net.panda.core.validation.Validations;
 import net.panda.service.AccountService;
+import net.panda.service.security.PipelineFunction;
 import net.sf.jstring.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,24 +47,32 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
             }
         }
     };
+    private final Function<TAccount, Account> accountACLFunction = new Function<TAccount, Account>() {
+        @Override
+        public Account apply(TAccount t) {
+            return getACL(accountFunction.apply(t));
+        }
+    };
     private final Function<TAccount, AccountSummary> accountSummaryFn = new Function<TAccount, AccountSummary>() {
         @Override
         public AccountSummary apply(TAccount t) {
             return new AccountSummary(t.getId(), t.getName(), t.getFullName());
         }
     };
+    private final PipelineAuthorizationDao pipelineAuthorizationDao;
 
     @Autowired
-    public AccountServiceImpl(ValidatorService validatorService, Strings strings, AccountDao accountDao) {
+    public AccountServiceImpl(ValidatorService validatorService, Strings strings, AccountDao accountDao, PipelineAuthorizationDao pipelineAuthorizationDao) {
         super(validatorService);
         this.strings = strings;
         this.accountDao = accountDao;
+        this.pipelineAuthorizationDao = pipelineAuthorizationDao;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Account authenticate(String user, String password) {
-        return accountFunction.apply(accountDao.findByNameAndPassword(user, password));
+        return accountACLFunction.apply(accountDao.findByNameAndPassword(user, password));
     }
 
     @Override
@@ -73,7 +84,7 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
     @Override
     @Transactional(readOnly = true)
     public Account getAccount(String mode, String user) {
-        return accountFunction.apply(
+        return accountACLFunction.apply(
                 accountDao.findByModeAndName(mode, user)
         );
     }
@@ -227,5 +238,22 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
                 accountDao.getUserAccounts(),
                 accountSummaryFn
         );
+    }
+
+    protected Account getACL(Account account) {
+        // Functions for all pipelines
+        List<TPipelineAuthorization> authList = pipelineAuthorizationDao.findByAccount(account.getId());
+        for (TPipelineAuthorization auth : authList) {
+            switch (auth.getRole()) {
+                case MANAGER:
+                    account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.UPDATE.name());
+                case EXECUTOR:
+                    account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.EXECUTE.name());
+                case PROMOTER:
+                    account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.PROMOTE.name());
+            }
+        }
+        // OK
+        return account;
     }
 }

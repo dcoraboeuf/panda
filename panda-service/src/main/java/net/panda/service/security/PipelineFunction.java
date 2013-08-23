@@ -4,6 +4,6 @@ public enum PipelineFunction {
 
     UPDATE,
 
-    DELETE
+    EXECUTE, PROMOTE, DELETE
 
 }

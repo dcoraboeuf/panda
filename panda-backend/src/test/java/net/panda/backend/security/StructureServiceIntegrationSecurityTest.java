@@ -23,7 +23,7 @@ public class StructureServiceIntegrationSecurityTest extends AbstractSecurityTes
 
 	@Test
 	public void pipeline_list_anonymous_ok() throws Exception {
-		asAnonymous(new Callable<Void>() {
+		asAnonymous().call(new Callable<Void>() {
 
 			@Override
 			public Void call() throws Exception {
@@ -35,7 +35,7 @@ public class StructureServiceIntegrationSecurityTest extends AbstractSecurityTes
 
 	@Test(expected = AuthenticationCredentialsNotFoundException.class)
 	public void pipeline_create_anonymous_denied() throws Exception {
-		asAnonymous(new Callable<Void>() {
+		asAnonymous().call(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
 				structureService.createPipeline(new PipelineCreationForm("pipeline_anonymous",
@@ -63,20 +63,56 @@ public class StructureServiceIntegrationSecurityTest extends AbstractSecurityTes
 		assertEquals("pipeline_admin", pipeline.getName());
 	}
 
-	@Test
-	public void pipeline_parameter_create_grant_ok() throws Exception {
-		final PipelineSummary pipeline = createPipeline("pipeline_parameter_create");
-		asUser().withPipelineGrant(pipeline.getId(), PipelineFunction.UPDATE).call(new Callable<ParameterSummary>() {
-			@Override
-			public ParameterSummary call() throws Exception {
-				return structureService.createParameter(pipeline.getId(), new ParameterCreationForm("git_remote",
-						"URL for the Git repository", "", false));
-			}
-		});
-	}
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void pipeline_parameter_create_anonymous_denied() throws Exception {
+        final PipelineSummary pipeline = createPipeline("pipeline_parameter_create_anonymous");
+        asAnonymous().call(new Callable<ParameterSummary>() {
+            @Override
+            public ParameterSummary call() throws Exception {
+                return structureService.createParameter(pipeline.getId(), new ParameterCreationForm("git_remote",
+                        "URL for the Git repository", "", false));
+            }
+        });
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    public void pipeline_parameter_create_user_denied() throws Exception {
+        final PipelineSummary pipeline = createPipeline("pipeline_parameter_create_user");
+        asUser().call(new Callable<ParameterSummary>() {
+            @Override
+            public ParameterSummary call() throws Exception {
+                return structureService.createParameter(pipeline.getId(), new ParameterCreationForm("git_remote",
+                        "URL for the Git repository", "", false));
+            }
+        });
+    }
+
+    @Test
+    public void pipeline_parameter_create_grant_ok() throws Exception {
+        final PipelineSummary pipeline = createPipeline("pipeline_parameter_create_grant");
+        asUser().withPipelineGrant(pipeline.getId(), PipelineFunction.UPDATE).call(new Callable<ParameterSummary>() {
+            @Override
+            public ParameterSummary call() throws Exception {
+                return structureService.createParameter(pipeline.getId(), new ParameterCreationForm("git_remote",
+                        "URL for the Git repository", "", false));
+            }
+        });
+    }
+
+    @Test
+    public void pipeline_parameter_create_admin_ok() throws Exception {
+        final PipelineSummary pipeline = createPipeline("pipeline_parameter_create_admin");
+        asAdmin().call(new Callable<ParameterSummary>() {
+            @Override
+            public ParameterSummary call() throws Exception {
+                return structureService.createParameter(pipeline.getId(), new ParameterCreationForm("git_remote",
+                        "URL for the Git repository", "", false));
+            }
+        });
+    }
 
 	private PipelineSummary createPipeline(final String name) throws Exception {
-		return asAdmin(new Callable<PipelineSummary>() {
+		return asAdmin().call(new Callable<PipelineSummary>() {
 			@Override
 			public PipelineSummary call() throws Exception {
 				return structureService.createPipeline(new PipelineCreationForm(name, "OK"));

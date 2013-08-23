@@ -18,6 +18,18 @@ import java.util.List;
 @Component
 public class PipelineAuthorizationJdbcDao extends AbstractJdbcDao implements PipelineAuthorizationDao {
 
+    private final RowMapper<TPipelineAuthorization> pipelineAuthorizationRowMapper = new RowMapper<TPipelineAuthorization>() {
+
+        @Override
+        public TPipelineAuthorization mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new TPipelineAuthorization(
+                    rs.getInt("pipeline"),
+                    rs.getInt("account"),
+                    SQLUtils.getEnum(PipelineRole.class, rs, "role")
+            );
+        }
+    };
+
     @Autowired
     public PipelineAuthorizationJdbcDao(DataSource dataSource) {
         super(dataSource);
@@ -29,17 +41,17 @@ public class PipelineAuthorizationJdbcDao extends AbstractJdbcDao implements Pip
         return getNamedParameterJdbcTemplate().query(
                 SQL.PIPELINE_AUTHORIZATION_BY_PIPELINE,
                 params("pipeline", pipeline),
-                new RowMapper<TPipelineAuthorization>() {
+                pipelineAuthorizationRowMapper
+        );
+    }
 
-                    @Override
-                    public TPipelineAuthorization mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new TPipelineAuthorization(
-                                rs.getInt("pipeline"),
-                                rs.getInt("account"),
-                                SQLUtils.getEnum(PipelineRole.class, rs, "role")
-                        );
-                    }
-                }
+    @Override
+    @Transactional(readOnly = true)
+    public List<TPipelineAuthorization> findByAccount(int account) {
+        return getNamedParameterJdbcTemplate().query(
+                SQL.PIPELINE_AUTHORIZATION_BY_ACCOUNT,
+                params("account", account),
+                pipelineAuthorizationRowMapper
         );
     }
 }
