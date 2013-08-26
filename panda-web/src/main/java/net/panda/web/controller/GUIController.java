@@ -1,5 +1,6 @@
 package net.panda.web.controller;
 
+import net.panda.core.support.MapBuilder;
 import net.panda.service.StructureService;
 import net.panda.web.support.AbstractGUIController;
 import net.panda.web.support.ErrorHandler;
@@ -29,9 +30,22 @@ public class GUIController extends AbstractGUIController {
     /**
      * Pipeline page
      */
-    @RequestMapping(value = "/pipeline/{name:[a-zA-Z0-9_\\.]+}", method = RequestMethod.GET)
-    public ModelAndView pipelineGet(@PathVariable String name) {
-        return new ModelAndView("pipeline", "pipeline", structureService.getPipelineByName(name));
+    @RequestMapping(value = "/pipeline/{pipeline}", method = RequestMethod.GET)
+    public ModelAndView pipelineGet(@PathVariable int pipeline) {
+        return new ModelAndView("pipeline", "pipeline", structureService.getPipeline(pipeline));
+    }
+
+    /**
+     * Branch page
+     */
+    @RequestMapping(value = "/pipeline/{pipeline}/branch/{branch}", method = RequestMethod.GET)
+    public ModelAndView pipelineBranchGet(@PathVariable int pipeline, @PathVariable int branch) {
+        return new ModelAndView("branch",
+                MapBuilder.<String, Object>create()
+                        .with("pipeline", structureService.getPipeline(pipeline))
+                        .with("branch", structureService.getBranch(branch))
+                        .get()
+        );
     }
 
 }

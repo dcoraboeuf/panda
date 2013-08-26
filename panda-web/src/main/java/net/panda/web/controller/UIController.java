@@ -29,7 +29,7 @@ public class UIController extends AbstractUIController {
         public Resource<PipelineSummary> apply(PipelineSummary o) {
             return new Resource<>(o)
                     .withLink(linkTo(methodOn(UIController.class).pipelineGet(o.getId())).withSelfRel())
-                    .withLink(linkTo(methodOn(GUIController.class).pipelineGet(o.getName())).withRel(Resource.REL_GUI));
+                    .withLink(linkTo(methodOn(GUIController.class).pipelineGet(o.getId())).withRel(Resource.REL_GUI));
         }
     };
     private final Function<Integer, Function<ParameterSummary, Resource<ParameterSummary>>> parameterSummaryResourceStubFn =
@@ -62,8 +62,9 @@ public class UIController extends AbstractUIController {
                             boolean granted = securityUtils.isGranted("PIPELINE", pipelineId, "UPDATE");
                             return new Resource<>(o)
                                     .withUpdate(granted)
-                                    .withDelete(granted);
-                            // TODO Link to itself
+                                    .withDelete(granted)
+                                    .withLink(linkTo(methodOn(UIController.class).pipelineBranchGet(pipelineId, o.getId())).withSelfRel())
+                                    .withLink(linkTo(methodOn(GUIController.class).pipelineBranchGet(pipelineId, o.getId())).withRel(Resource.REL_GUI));
                         }
                     };
                 }
@@ -172,6 +173,15 @@ public class UIController extends AbstractUIController {
     Resource<BranchSummary> pipelineBranchCreate(@PathVariable int pipeline, @RequestBody BranchCreationForm form) {
         return branchSummaryResourceStubFn.apply(pipeline).apply(
                 structureService.createBranch(pipeline, form)
+        );
+    }
+
+    @RequestMapping(value = "/pipeline/{pipeline}/branch/{branch}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Resource<BranchSummary> pipelineBranchGet(@PathVariable int pipeline, @PathVariable int branch) {
+        return branchSummaryResourceStubFn.apply(pipeline).apply(
+                structureService.getBranch(branch)
         );
     }
 
