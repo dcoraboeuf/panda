@@ -467,6 +467,20 @@ parameter.overriddable
     en -> Can be overridden?
     fr -> Peut être surchargé\u00a0 ?
 
+[branches]
+
+pipeline.branch.create
+    en -> Create a branch
+    fr -> Créer une branche
+
+branch.name
+    en -> Branch name
+    fr -> Nom de la branche
+
+branch.description
+    en -> Description
+    fr -> Description
+
 [authorizations]
 
 pipeline.authorizations

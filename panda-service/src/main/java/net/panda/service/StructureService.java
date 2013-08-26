@@ -27,4 +27,8 @@ public interface StructureService {
     Ack updatePipelineAuthorization(int pipeline, int account, PipelineRole role);
 
     List<PipelineAuthorization> getPipelineAuthorizations(int pipeline);
+
+    BranchSummary createBranch(int pipeline, BranchCreationForm form);
+
+    BranchSummary getBranch(int branch);
 }

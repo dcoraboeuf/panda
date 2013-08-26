@@ -17,7 +17,6 @@ import net.panda.service.security.PipelineFunction;
 import net.sf.jstring.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -242,16 +241,18 @@ public class AccountServiceImpl extends AbstractValidatorService implements Acco
     }
 
     protected Account getACL(Account account) {
-        // Functions for all pipelines
-        List<TPipelineAuthorization> authList = pipelineAuthorizationDao.findByAccount(account.getId());
-        for (TPipelineAuthorization auth : authList) {
-            switch (auth.getRole()) {
-                case MANAGER:
-                    account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.UPDATE.name());
-                case EXECUTOR:
-                    account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.EXECUTE.name());
-                case PROMOTER:
-                    account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.PROMOTE.name());
+        if (account != null) {
+            // Functions for all pipelines
+            List<TPipelineAuthorization> authList = pipelineAuthorizationDao.findByAccount(account.getId());
+            for (TPipelineAuthorization auth : authList) {
+                switch (auth.getRole()) {
+                    case MANAGER:
+                        account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.UPDATE.name());
+                    case EXECUTOR:
+                        account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.EXECUTE.name());
+                    case PROMOTER:
+                        account = account.withACL("PIPELINE", auth.getPipeline(), PipelineFunction.PROMOTE.name());
+                }
             }
         }
         // OK

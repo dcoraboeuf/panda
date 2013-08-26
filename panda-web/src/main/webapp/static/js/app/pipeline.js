@@ -25,6 +25,27 @@ define(['dialog', 'jquery', 'ajax', 'dynamic'], function(dialog, $, ajax, dynami
         });
     }
 
+    function pipelineBranchCreate () {
+        dialog.show({
+            title: 'pipeline.branch.create'.loc(),
+            templateId: 'pipeline-branch-create',
+            submitFn: function (config) {
+                ajax.post({
+                    url: 'ui/pipeline/{0}/branch'.format(pipelineId),
+                    data: {
+                        name: $('#branch-name').val(),
+                        description: $('#branch-description').val()
+                    },
+                    successFn: function (pipeline) {
+                        config.closeFn();
+                        dynamic.reloadSection('pipeline-branch-list');
+                    },
+                    errorFn: ajax.simpleAjaxErrorFn(config.errorFn)
+                });
+            }
+        });
+    }
+
     function pipelineAuthorizationCreate () {
         ajax.get({
             url: 'ui/account/user',
@@ -54,6 +75,7 @@ define(['dialog', 'jquery', 'ajax', 'dynamic'], function(dialog, $, ajax, dynami
     }
 
     $('#pipeline-parameter-create').click(pipelineParameterCreate);
+    $('#pipeline-branch-create').click(pipelineBranchCreate);
     $('#pipeline-authorization-create').click(pipelineAuthorizationCreate);
 
 })

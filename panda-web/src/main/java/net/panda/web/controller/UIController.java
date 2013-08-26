@@ -50,6 +50,24 @@ public class UIController extends AbstractUIController {
                     };
                 }
             };
+    private final Function<Integer, Function<BranchSummary, Resource<BranchSummary>>> branchSummaryResourceStubFn =
+            new Function<Integer, Function<BranchSummary, Resource<BranchSummary>>>() {
+
+                @Override
+                public Function<BranchSummary, Resource<BranchSummary>> apply(final Integer pipelineId) {
+                    return new Function<BranchSummary, Resource<BranchSummary>>() {
+
+                        @Override
+                        public Resource<BranchSummary> apply(BranchSummary o) {
+                            boolean granted = securityUtils.isGranted("PIPELINE", pipelineId, "UPDATE");
+                            return new Resource<>(o)
+                                    .withUpdate(granted)
+                                    .withDelete(granted);
+                            // TODO Link to itself
+                        }
+                    };
+                }
+            };
 
     @Autowired
     public UIController(ErrorHandler errorHandler, Strings strings, StructureService structureService, SecurityUtils securityUtils) {
@@ -136,6 +154,15 @@ public class UIController extends AbstractUIController {
         Resource<ParameterSummary> summary = pipelineParameterGet(pipeline, parameter);
         structureService.deleteParameter(pipeline, parameter);
         return summary;
+    }
+
+    @RequestMapping(value = "/pipeline/{pipeline}/branch", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Resource<BranchSummary> pipelineBranchCreate(@PathVariable int pipeline, @RequestBody BranchCreationForm form) {
+        return branchSummaryResourceStubFn.apply(pipeline).apply(
+                structureService.createBranch(pipeline, form)
+        );
     }
 
     /**

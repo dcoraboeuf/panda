@@ -2,9 +2,11 @@ package net.panda.backend;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import net.panda.backend.dao.BranchDao;
 import net.panda.backend.dao.ParameterDao;
 import net.panda.backend.dao.PipelineAuthorizationDao;
 import net.panda.backend.dao.PipelineDao;
+import net.panda.backend.dao.model.TBranch;
 import net.panda.backend.dao.model.TParameter;
 import net.panda.backend.dao.model.TPipeline;
 import net.panda.backend.dao.model.TPipelineAuthorization;
@@ -24,113 +26,135 @@ import java.util.List;
 @Service
 public class StructureServiceImpl implements StructureService {
 
-	private final AccountService accountService;
-	private final PipelineDao pipelineDao;
-	private final ParameterDao parameterDao;
-	private final PipelineAuthorizationDao pipelineAuthorizationDao;
-	private final Function<TPipeline, PipelineSummary> pipelineSummaryFunction = new Function<TPipeline, PipelineSummary>() {
-		@Override
-		public PipelineSummary apply(TPipeline t) {
-			return new PipelineSummary(t.getId(), t.getName(), t.getDescription());
-		}
-	};
-	private final Function<TParameter, ParameterSummary> parameterSummaryFunction = new Function<TParameter, ParameterSummary>() {
+    private final AccountService accountService;
+    private final PipelineDao pipelineDao;
+    private final ParameterDao parameterDao;
+    private final BranchDao branchDao;
+    private final PipelineAuthorizationDao pipelineAuthorizationDao;
+    private final Function<TPipeline, PipelineSummary> pipelineSummaryFunction = new Function<TPipeline, PipelineSummary>() {
+        @Override
+        public PipelineSummary apply(TPipeline t) {
+            return new PipelineSummary(t.getId(), t.getName(), t.getDescription());
+        }
+    };
+    private final Function<TBranch, BranchSummary> branchSummaryFunction = new Function<TBranch, BranchSummary>() {
 
-		@Override
-		public ParameterSummary apply(TParameter t) {
-			return new ParameterSummary(t.getId(), t.getName(), t.getDescription(), t.getDefaultValue(),
-					t.isOverriddable());
-		}
-	};
+        @Override
+        public BranchSummary apply(TBranch t) {
+            return new BranchSummary(t.getId(), t.getName(), t.getDescription());
+        }
+    };
+    private final Function<TParameter, ParameterSummary> parameterSummaryFunction = new Function<TParameter, ParameterSummary>() {
 
-	@Autowired
-	public StructureServiceImpl(AccountService accountService, PipelineDao pipelineDao, ParameterDao parameterDao,
-			PipelineAuthorizationDao pipelineAuthorizationDao) {
-		this.accountService = accountService;
-		this.pipelineDao = pipelineDao;
-		this.parameterDao = parameterDao;
-		this.pipelineAuthorizationDao = pipelineAuthorizationDao;
-	}
+        @Override
+        public ParameterSummary apply(TParameter t) {
+            return new ParameterSummary(t.getId(), t.getName(), t.getDescription(), t.getDefaultValue(),
+                    t.isOverriddable());
+        }
+    };
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<PipelineSummary> getPipelines() {
-		return Lists.transform(pipelineDao.findAll(), pipelineSummaryFunction);
-	}
+    @Autowired
+    public StructureServiceImpl(AccountService accountService, PipelineDao pipelineDao, ParameterDao parameterDao,
+                                BranchDao branchDao, PipelineAuthorizationDao pipelineAuthorizationDao) {
+        this.accountService = accountService;
+        this.pipelineDao = pipelineDao;
+        this.parameterDao = parameterDao;
+        this.branchDao = branchDao;
+        this.pipelineAuthorizationDao = pipelineAuthorizationDao;
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public PipelineSummary getPipeline(int id) {
-		return pipelineSummaryFunction.apply(pipelineDao.getById(id));
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public List<PipelineSummary> getPipelines() {
+        return Lists.transform(pipelineDao.findAll(), pipelineSummaryFunction);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public PipelineSummary getPipelineByName(String name) {
-		return pipelineSummaryFunction.apply(pipelineDao.getByName(name));
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public PipelineSummary getPipeline(int id) {
+        return pipelineSummaryFunction.apply(pipelineDao.getById(id));
+    }
 
-	@Override
-	@Transactional
-	@AdminGrant
-	public PipelineSummary createPipeline(PipelineCreationForm form) {
-		int id = pipelineDao.create(form.getName(), form.getDescription());
-		return getPipeline(id);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public PipelineSummary getPipelineByName(String name) {
+        return pipelineSummaryFunction.apply(pipelineDao.getByName(name));
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<ParameterSummary> getPipelineParameters(int pipeline) {
-		return Lists.transform(parameterDao.findByPipeline(pipeline), parameterSummaryFunction);
-	}
+    @Override
+    @Transactional
+    @AdminGrant
+    public PipelineSummary createPipeline(PipelineCreationForm form) {
+        int id = pipelineDao.create(form.getName(), form.getDescription());
+        return getPipeline(id);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public ParameterSummary getPipelineParameter(int id) {
-		return parameterSummaryFunction.apply(parameterDao.getById(id));
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public List<ParameterSummary> getPipelineParameters(int pipeline) {
+        return Lists.transform(parameterDao.findByPipeline(pipeline), parameterSummaryFunction);
+    }
 
-	@Override
-	@Transactional
-	@PipelineGrant(PipelineFunction.UPDATE)
-	public ParameterSummary createParameter(@PipelineGrantId int pipeline, ParameterCreationForm form) {
-		return getPipelineParameter(parameterDao.create(pipeline, form.getName(), form.getDescription(),
-				form.getDefaultValue(), form.isOverriddable()));
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public ParameterSummary getPipelineParameter(int id) {
+        return parameterSummaryFunction.apply(parameterDao.getById(id));
+    }
 
-	@Override
-	@Transactional
-	@PipelineGrant(PipelineFunction.UPDATE)
-	public ParameterSummary updateParameter(@PipelineGrantId int pipeline, int parameter, ParameterUpdateForm form) {
-		parameterDao.update(parameter, form.getName(), form.getDescription(), form.getDefaultValue(),
-				form.isOverriddable());
-		return getPipelineParameter(parameter);
-	}
+    @Override
+    @Transactional
+    @PipelineGrant(PipelineFunction.UPDATE)
+    public ParameterSummary createParameter(@PipelineGrantId int pipeline, ParameterCreationForm form) {
+        return getPipelineParameter(parameterDao.create(pipeline, form.getName(), form.getDescription(),
+                form.getDefaultValue(), form.isOverriddable()));
+    }
 
-	@Override
-	@Transactional
-	@PipelineGrant(PipelineFunction.DELETE)
-	public void deleteParameter(@PipelineGrantId int pipeline, int parameter) {
-		parameterDao.delete(parameter);
-	}
+    @Override
+    @Transactional
+    @PipelineGrant(PipelineFunction.UPDATE)
+    public ParameterSummary updateParameter(@PipelineGrantId int pipeline, int parameter, ParameterUpdateForm form) {
+        parameterDao.update(parameter, form.getName(), form.getDescription(), form.getDefaultValue(),
+                form.isOverriddable());
+        return getPipelineParameter(parameter);
+    }
 
-	@Override
-	@Transactional
-	@PipelineGrant(PipelineFunction.UPDATE)
-	public Ack updatePipelineAuthorization(@PipelineGrantId int pipeline, int account, PipelineRole role) {
-		return parameterDao.updatePipelineAuthorization(pipeline, account, role);
-	}
+    @Override
+    @Transactional
+    @PipelineGrant(PipelineFunction.DELETE)
+    public void deleteParameter(@PipelineGrantId int pipeline, int parameter) {
+        parameterDao.delete(parameter);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<PipelineAuthorization> getPipelineAuthorizations(int pipeline) {
-		return Lists.transform(pipelineAuthorizationDao.findByPipeline(pipeline),
-				new Function<TPipelineAuthorization, PipelineAuthorization>() {
+    @Override
+    @Transactional
+    @PipelineGrant(PipelineFunction.UPDATE)
+    public Ack updatePipelineAuthorization(@PipelineGrantId int pipeline, int account, PipelineRole role) {
+        return parameterDao.updatePipelineAuthorization(pipeline, account, role);
+    }
 
-					@Override
-					public PipelineAuthorization apply(TPipelineAuthorization o) {
-						return new PipelineAuthorization(accountService.getAccountSummary(o.getAccount()), o.getRole());
-					}
-				});
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public List<PipelineAuthorization> getPipelineAuthorizations(int pipeline) {
+        return Lists.transform(pipelineAuthorizationDao.findByPipeline(pipeline),
+                new Function<TPipelineAuthorization, PipelineAuthorization>() {
+
+                    @Override
+                    public PipelineAuthorization apply(TPipelineAuthorization o) {
+                        return new PipelineAuthorization(accountService.getAccountSummary(o.getAccount()), o.getRole());
+                    }
+                });
+    }
+
+    @Override
+    @Transactional
+    @PipelineGrant(PipelineFunction.UPDATE)
+    public BranchSummary createBranch(@PipelineGrantId int pipeline, BranchCreationForm form) {
+        return getBranch(branchDao.create(pipeline, form.getName(), form.getDescription()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BranchSummary getBranch(int branch) {
+        return branchSummaryFunction.apply(branchDao.getById(branch));
+    }
 }

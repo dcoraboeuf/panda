@@ -17,3 +17,7 @@ net.panda.backend.exceptions.PipelineNameNotFoundException
 net.panda.backend.exceptions.ParameterNameAlreadyExistException
     en -> [E-005] Parameter "{0}" is already defined.
     fr -> [E-005] La paramètre "{0}" est déjà défini.
+
+net.panda.backend.exceptions.BranchNameAlreadyExistsException
+    en -> [E-006] Branch "{0}" is already defined.
+    fr -> [E-006] La branche "{0}" est déjà définie.
