@@ -1,0 +1,27 @@
+<#include "/lib/layout.html">
+
+<@layout_std
+    page="branch"
+    title=branch.name?html
+    breadcrumbs={
+        loc("home"): "",
+        pipeline.name?html: "pipeline/${pipeline.id?c}"
+    }>
+
+    <input id="pipeline-id" type="hidden" value="${pipeline.id?c}" />
+    <input id="branch-id" type="hidden" value="${branch.id?c}" />
+
+    <@title
+        value=branch.name
+        description=branch.description
+        close="pipeline/${pipeline.id?c}">
+        <@title_uplink name=pipeline.name href="pipeline/${pipeline.id?c}" />
+    </@title>
+
+    <div class="row-fluid">
+        <div class="span12">
+            TODO Here'll come the main dashboard for the branch...
+        </div>
+    </div>
+
+</@layout_std>
