@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Component
 public class BranchJdbcDao extends AbstractJdbcDao implements BranchDao {
@@ -53,6 +54,16 @@ public class BranchJdbcDao extends AbstractJdbcDao implements BranchDao {
         return getNamedParameterJdbcTemplate().queryForObject(
                 SQL.BRANCH_BY_ID,
                 params("id", branch),
+                branchRowMapper
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TBranch> findByPipeline(int pipeline) {
+        return getNamedParameterJdbcTemplate().query(
+                SQL.BRANCH_BY_PIPELINE,
+                params("pipeline", pipeline),
                 branchRowMapper
         );
     }

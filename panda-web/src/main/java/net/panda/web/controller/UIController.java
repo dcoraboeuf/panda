@@ -156,6 +156,16 @@ public class UIController extends AbstractUIController {
         return summary;
     }
 
+    @RequestMapping(value = "/pipeline/{pipeline}/branch", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Resource<BranchSummary>> pipelineBranchList(@PathVariable int pipeline) {
+        return Lists.transform(
+                structureService.getBranches(pipeline),
+                branchSummaryResourceStubFn.apply(pipeline)
+        );
+    }
+
     @RequestMapping(value = "/pipeline/{pipeline}/branch", method = RequestMethod.POST)
     public
     @ResponseBody

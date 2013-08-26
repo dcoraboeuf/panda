@@ -39,4 +39,5 @@ public interface SQL {
     // Branches
     String BRANCH_CREATE = "INSERT INTO BRANCH (PIPELINE, NAME, DESCRIPTION) VALUES (:pipeline, :name, :description)";
     String BRANCH_BY_ID = "SELECT * FROM BRANCH WHERE ID = :id";
+    String BRANCH_BY_PIPELINE = "SELECT * FROM BRANCH WHERE PIPELINE = :pipeline ORDER BY NAME ASC";
 }

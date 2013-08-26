@@ -36,9 +36,9 @@ define(['dialog', 'jquery', 'ajax', 'dynamic'], function(dialog, $, ajax, dynami
                         name: $('#branch-name').val(),
                         description: $('#branch-description').val()
                     },
-                    successFn: function (pipeline) {
+                    successFn: function (branch) {
                         config.closeFn();
-                        dynamic.reloadSection('pipeline-branch-list');
+                        'pipeline/{0}/branch/{1}'.format(pipelineId, branch.data.id).goto();
                     },
                     errorFn: ajax.simpleAjaxErrorFn(config.errorFn)
                 });

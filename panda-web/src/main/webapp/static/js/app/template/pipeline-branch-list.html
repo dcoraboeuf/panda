@@ -1,0 +1,17 @@
+<tr>
+    <td>
+        <b>{{data.name}}</b>
+        <br/>
+        <span class="description">
+            {{data.description}}
+        </span>
+    </td>
+    <td>
+        {{#granted 'UPDATE'}}
+            <i class="branch-update icon-pencil action action-optional action-inline" data-parameter-id="{{data.id}}"></i>
+        {{/granted}}
+        {{#granted 'DELETE'}}
+            <i class="branch-delete icon-trash action action-optional action-inline" data-parameter-id="{{data.id}}"></i>
+        {{/granted}}
+    </td>
+</tr>

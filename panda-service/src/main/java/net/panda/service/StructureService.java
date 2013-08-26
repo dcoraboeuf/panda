@@ -31,4 +31,6 @@ public interface StructureService {
     BranchSummary createBranch(int pipeline, BranchCreationForm form);
 
     BranchSummary getBranch(int branch);
+
+    List<BranchSummary> getBranches(int pipeline);
 }

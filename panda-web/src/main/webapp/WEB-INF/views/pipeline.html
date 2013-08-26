@@ -43,7 +43,12 @@
         </div>
         <div class="${span}">
             <@section title=loc('pipeline.branches') description=loc('pipeline.branches.description')>
-                TODO Branches
+                <div
+                    id="pipeline-branch-list"
+                    class="dynamic"
+                    dynamic-controller="pipeline-branch-list"
+                    dynamic-pipeline-id="${pipeline.id?c}"
+                    ></div>
                 <#if secGrant('PIPELINE', pipeline.id, 'UPDATE')>
                     <button id="pipeline-branch-create" type="button" class="btn"><@lh key="pipeline.branch.create" /></button>
                 </#if>

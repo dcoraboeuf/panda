@@ -157,4 +157,13 @@ public class StructureServiceImpl implements StructureService {
     public BranchSummary getBranch(int branch) {
         return branchSummaryFunction.apply(branchDao.getById(branch));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BranchSummary> getBranches(int pipeline) {
+        return Lists.transform(
+                branchDao.findByPipeline(pipeline),
+                branchSummaryFunction
+        );
+    }
 }
