@@ -33,4 +33,6 @@ public interface StructureService {
     BranchSummary getBranch(int branch);
 
     List<BranchSummary> getBranches(int pipeline);
+
+    List<BranchParameter> getBranchParameters(int branch);
 }

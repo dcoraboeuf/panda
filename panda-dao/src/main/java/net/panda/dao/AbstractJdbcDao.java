@@ -1,6 +1,7 @@
 package net.panda.dao;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
@@ -43,6 +44,15 @@ public abstract class AbstractJdbcDao extends NamedParameterJdbcDaoSupport {
             return null;
         } else {
             return items.get(0);
+        }
+    }
+
+    protected <T> Optional<T> getOptional(String sql, MapSqlParameterSource criteria, RowMapper<T> rowMapper) {
+        List<T> items = getNamedParameterJdbcTemplate().query(sql, criteria, rowMapper);
+        if (items.isEmpty()) {
+            return Optional.absent();
+        } else {
+            return Optional.of(items.get(0));
         }
     }
 

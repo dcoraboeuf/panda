@@ -1,15 +1,10 @@
 package net.panda.backend;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import net.panda.backend.dao.BranchDao;
-import net.panda.backend.dao.ParameterDao;
-import net.panda.backend.dao.PipelineAuthorizationDao;
-import net.panda.backend.dao.PipelineDao;
-import net.panda.backend.dao.model.TBranch;
-import net.panda.backend.dao.model.TParameter;
-import net.panda.backend.dao.model.TPipeline;
-import net.panda.backend.dao.model.TPipelineAuthorization;
+import net.panda.backend.dao.*;
+import net.panda.backend.dao.model.*;
 import net.panda.core.model.*;
 import net.panda.service.AccountService;
 import net.panda.service.StructureService;
@@ -30,6 +25,7 @@ public class StructureServiceImpl implements StructureService {
     private final PipelineDao pipelineDao;
     private final ParameterDao parameterDao;
     private final BranchDao branchDao;
+    private final BranchParameterDao branchParameterDao;
     private final PipelineAuthorizationDao pipelineAuthorizationDao;
     private final Function<TPipeline, PipelineSummary> pipelineSummaryFunction = new Function<TPipeline, PipelineSummary>() {
         @Override
@@ -41,7 +37,12 @@ public class StructureServiceImpl implements StructureService {
 
         @Override
         public BranchSummary apply(TBranch t) {
-            return new BranchSummary(t.getId(), t.getName(), t.getDescription());
+            return new BranchSummary(
+                    t.getId(),
+                    getPipeline(t.getPipeline()),
+                    t.getName(),
+                    t.getDescription()
+            );
         }
     };
     private final Function<TParameter, ParameterSummary> parameterSummaryFunction = new Function<TParameter, ParameterSummary>() {
@@ -55,11 +56,12 @@ public class StructureServiceImpl implements StructureService {
 
     @Autowired
     public StructureServiceImpl(AccountService accountService, PipelineDao pipelineDao, ParameterDao parameterDao,
-                                BranchDao branchDao, PipelineAuthorizationDao pipelineAuthorizationDao) {
+                                BranchDao branchDao, BranchParameterDao branchParameterDao, PipelineAuthorizationDao pipelineAuthorizationDao) {
         this.accountService = accountService;
         this.pipelineDao = pipelineDao;
         this.parameterDao = parameterDao;
         this.branchDao = branchDao;
+        this.branchParameterDao = branchParameterDao;
         this.pipelineAuthorizationDao = pipelineAuthorizationDao;
     }
 
@@ -164,6 +166,31 @@ public class StructureServiceImpl implements StructureService {
         return Lists.transform(
                 branchDao.findByPipeline(pipeline),
                 branchSummaryFunction
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BranchParameter> getBranchParameters(final int branch) {
+        // Gets the branch
+        BranchSummary theBranch = getBranch(branch);
+        // Pipeline parameters
+        List<ParameterSummary> pipelineParameters = getPipelineParameters(theBranch.getPipelineSummary().getId());
+        // Transformation
+        return Lists.transform(
+                pipelineParameters,
+                new Function<ParameterSummary, BranchParameter>() {
+                    @Override
+                    public BranchParameter apply(ParameterSummary parameter) {
+                        Optional<TBranchParameter> branchParameter = branchParameterDao.findByBranchAndParameter(
+                                branch,
+                                parameter.getId());
+                        return new BranchParameter(
+                                parameter,
+                                branchParameter.isPresent() ? branchParameter.get().getValue() : ""
+                        );
+                    }
+                }
         );
     }
 }
