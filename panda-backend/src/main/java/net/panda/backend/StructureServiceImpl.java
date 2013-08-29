@@ -172,27 +172,45 @@ public class StructureServiceImpl implements StructureService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BranchParameter> getBranchParameters(final int branch) {
-        // Gets the branch
-        BranchSummary theBranch = getBranch(branch);
-        // Pipeline parameters
-        List<ParameterSummary> pipelineParameters = getPipelineParameters(theBranch.getPipelineSummary().getId());
-        // Transformation
-        return Lists.transform(
-                pipelineParameters,
-                new Function<ParameterSummary, BranchParameter>() {
-                    @Override
-                    public BranchParameter apply(ParameterSummary parameter) {
-                        Optional<TBranchParameter> branchParameter = branchParameterDao.findByBranchAndParameter(
-                                branch,
-                                parameter.getId());
-                        return new BranchParameter(
-                                parameter,
-                                branchParameter.isPresent() ? branchParameter.get().getValue() : ""
-                        );
+    public List<BranchParameter> getBranchParameters(int pipeline, final int branch) {
+        // Default branch
+        if (branch == 0) {
+            return Lists.transform(
+                    getPipelineParameters(pipeline),
+                    new Function<ParameterSummary, BranchParameter>() {
+                        @Override
+                        public BranchParameter apply(ParameterSummary parameter) {
+                            return new BranchParameter(
+                                    parameter,
+                                    null
+                            );
+                        }
                     }
-                }
-        );
+            );
+        }
+        // Another branch
+        else {
+            // Gets the branch
+            BranchSummary theBranch = getBranch(branch);
+            // Pipeline parameters
+            List<ParameterSummary> pipelineParameters = getPipelineParameters(theBranch.getPipelineSummary().getId());
+            // Transformation
+            return Lists.transform(
+                    pipelineParameters,
+                    new Function<ParameterSummary, BranchParameter>() {
+                        @Override
+                        public BranchParameter apply(ParameterSummary parameter) {
+                            Optional<TBranchParameter> branchParameter = branchParameterDao.findByBranchAndParameter(
+                                    branch,
+                                    parameter.getId());
+                            return new BranchParameter(
+                                    parameter,
+                                    branchParameter.isPresent() ? branchParameter.get().getValue() : ""
+                            );
+                        }
+                    }
+            );
+        }
     }
 
     @Override

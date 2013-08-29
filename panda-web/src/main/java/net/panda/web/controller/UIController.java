@@ -208,7 +208,7 @@ public class UIController extends AbstractUIController {
     @ResponseBody
     List<Resource<BranchParameter>> pipelineBranchParameterList(@PathVariable int pipeline, @PathVariable int branch) {
         return Lists.transform(
-                structureService.getBranchParameters(branch),
+                structureService.getBranchParameters(pipeline, branch),
                 branchParameterResourceStubFn.apply(pipeline)
         );
     }
