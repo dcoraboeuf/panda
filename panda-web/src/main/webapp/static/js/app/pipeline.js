@@ -23,15 +23,38 @@ define(['dialog', 'jquery', 'ajax', 'dynamic', 'dialog'], function(dialog, $, aj
                                         url: 'ui/pipeline/{0}/branch/{1}/parameter'.format(pipelineId, branchId),
                                         successFn: function (branchParameters) {
                                             $.each(branchParameters, function (index, branchParameter) {
-                                                if (branchParameter.data.def.overriddable) {
-                                                    dialog.get('#run-parameter-' + branchParameter.data.def.id).val(branchParameter.data.actualValue)
-                                                } else {
-                                                    dialog.get('#run-parameter-' + branchParameter.data.def.id).text(branchParameter.data.actualValue)
+                                                dialog.get('#run-parameter-' + branchParameter.data.def.id).val(branchParameter.data.actualValue);
+                                                if (!branchParameter.data.def.overriddable) {
+                                                    dialog.get('#run-parameter-value-' + branchParameter.data.def.id).text(branchParameter.data.actualValue);
                                                 }
                                             })
                                         }
                                     })
                                 })
+                            },
+                            submitFn: function (dialog) {
+                                // Collects the data
+                                var data = {};
+                                data.pipeline = pipelineId;
+                                data.branch = dialog.get('#pipeline-branch').val();
+                                data.parameters = [];
+                                $.each(parameters, function (index, parameter) {
+                                    data.parameters.push({
+                                        parameter: parameter.data.id,
+                                        value: dialog.get('#run-parameter-' + parameter.data.id).val()
+                                    });
+                                });
+                                // Closes the dialog
+                                dialog.closeFn();
+                                // Creates the instance
+                                ajax.post({
+                                    url: 'ui/instance',
+                                    data: data,
+                                    successFn: function (instance) {
+                                        // TODO Uses the link into the instance resource
+                                        location.reload();
+                                    }
+                                });
                             }
                         })
                     }
@@ -76,6 +99,7 @@ define(['dialog', 'jquery', 'ajax', 'dynamic', 'dialog'], function(dialog, $, aj
                     },
                     successFn: function (branch) {
                         config.closeFn();
+                        // TODO Uses the link into the branch resource
                         'pipeline/{0}/branch/{1}'.format(pipelineId, branch.data.id).goto();
                     },
                     errorFn: ajax.simpleAjaxErrorFn(config.errorFn)
