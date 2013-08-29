@@ -15,6 +15,23 @@ define(['dialog', 'jquery', 'ajax', 'dynamic', 'dialog'], function(dialog, $, aj
                             data: {
                                 branches: branches,
                                 parameters: parameters
+                            },
+                            initFn: function (dialog) {
+                                dialog.get('#pipeline-branch').change(function () {
+                                    var branchId = dialog.get('#pipeline-branch').val();
+                                    ajax.get({
+                                        url: 'ui/pipeline/{0}/branch/{1}/parameter'.format(pipelineId, branchId),
+                                        successFn: function (branchParameters) {
+                                            $.each(branchParameters, function (index, branchParameter) {
+                                                if (branchParameter.data.def.overriddable) {
+                                                    dialog.get('#run-parameter-' + branchParameter.data.def.id).val(branchParameter.data.actualValue)
+                                                } else {
+                                                    dialog.get('#run-parameter-' + branchParameter.data.def.id).text(branchParameter.data.actualValue)
+                                                }
+                                            })
+                                        }
+                                    })
+                                })
                             }
                         })
                     }

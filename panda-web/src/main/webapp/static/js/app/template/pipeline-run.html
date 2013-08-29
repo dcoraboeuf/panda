@@ -22,7 +22,7 @@
                             {{#if data.overriddable}}
                                 <input id="run-parameter-{{data.id}}" value="{{data.defaultValue}}" />
                             {{else}}
-                                <span>{{data.defaultValue}}</span>
+                                <span id="run-parameter-{{data.id}}">{{data.defaultValue}}</span>
                                 <i class="icon-lock"></i>
                             {{/if}}
                         </td>
