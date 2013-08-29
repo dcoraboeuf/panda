@@ -33,6 +33,12 @@
     color: #AAAAAA;
 }
 
+/* Important text */
+.important {
+    font-weight: bold;
+    color: red;
+}
+
 /* Page title */
 
 .title {

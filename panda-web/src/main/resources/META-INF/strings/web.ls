@@ -481,6 +481,16 @@ branch.description
     en -> Description
     fr -> Description
 
+[branch parameters]
+
+branch.parameters
+    en -> Branch parameters
+    fr -> Paramètres de branche
+
+branch.parameters.description
+    en -> Parameters linked to the branch, with their specific value.
+    fr -> Paramètres liés à la branche, avec leurs valeurs spécifiques.
+
 [authorizations]
 
 pipeline.authorizations

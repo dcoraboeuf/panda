@@ -2,6 +2,7 @@ package net.panda.web.resource;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.panda.core.model.BranchParameter;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -43,4 +44,7 @@ public class Resource<T> extends ResourceSupport {
         return withAction(ResourceAction.DELETE, ok);
     }
 
+    public Resource<T> withUpdateAndDelete(boolean ok) {
+        return withUpdate(ok).withDelete(ok);
+    }
 }

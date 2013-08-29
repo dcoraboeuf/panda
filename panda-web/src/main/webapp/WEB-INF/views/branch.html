@@ -3,6 +3,7 @@
 <@layout_std
     page="branch"
     title=branch.name?html
+    noscript=true
     breadcrumbs={
         loc("home"): "",
         pipeline.name?html: "pipeline/${pipeline.id?c}"
@@ -21,6 +22,20 @@
     <div class="row-fluid">
         <div class="span12">
             TODO Here'll come the main dashboard for the branch...
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span4">
+            <@section title=loc('branch.parameters') description=loc('branch.parameters.description')>
+                <div
+                    id="branch-parameter-list"
+                    class="dynamic"
+                    dynamic-controller="branch-parameter-list"
+                    dynamic-pipeline-id="${pipeline.id?c}"
+                    dynamic-branch-id="${branch.id?c}"
+                    ></div>
+            </@section>
         </div>
     </div>
 

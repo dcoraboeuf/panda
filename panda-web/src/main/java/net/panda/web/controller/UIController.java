@@ -69,6 +69,21 @@ public class UIController extends AbstractUIController {
                     };
                 }
             };
+    private final Function<Integer, Function<BranchParameter, Resource<BranchParameter>>> branchParameterResourceStubFn =
+            new Function<Integer, Function<BranchParameter, Resource<BranchParameter>>>() {
+
+                @Override
+                public Function<BranchParameter, Resource<BranchParameter>> apply(final Integer pipelineId) {
+                    return new Function<BranchParameter, Resource<BranchParameter>>() {
+
+                        @Override
+                        public Resource<BranchParameter> apply(BranchParameter o) {
+                            return new Resource<>(o)
+                                    .withUpdateAndDelete(securityUtils.isGranted("PIPELINE", pipelineId, "UPDATE"));
+                        }
+                    };
+                }
+            };
 
     @Autowired
     public UIController(ErrorHandler errorHandler, Strings strings, StructureService structureService, SecurityUtils securityUtils) {
@@ -182,6 +197,19 @@ public class UIController extends AbstractUIController {
     Resource<BranchSummary> pipelineBranchGet(@PathVariable int pipeline, @PathVariable int branch) {
         return branchSummaryResourceStubFn.apply(pipeline).apply(
                 structureService.getBranch(branch)
+        );
+    }
+
+    /**
+     * Gets the list of parameters for a branch
+     */
+    @RequestMapping(value = "/pipeline/{pipeline}/branch/{branch}/parameter", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Resource<BranchParameter>> pipelineBranchParameterList(@PathVariable int pipeline, @PathVariable int branch) {
+        return Lists.transform(
+                structureService.getBranchParameters(branch),
+                branchParameterResourceStubFn.apply(pipeline)
         );
     }
 
