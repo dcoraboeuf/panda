@@ -12,6 +12,7 @@ import net.panda.service.security.AdminGrant;
 import net.panda.service.security.PipelineFunction;
 import net.panda.service.security.PipelineGrant;
 import net.panda.service.security.PipelineGrantId;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -192,5 +193,17 @@ public class StructureServiceImpl implements StructureService {
                     }
                 }
         );
+    }
+
+    @Override
+    @Transactional
+    @PipelineGrant(PipelineFunction.UPDATE)
+    public Ack updateBranchParameter(@PipelineGrantId int pipeline, int branch, int parameter, BranchParameterForm form) {
+        String value = form.getValue();
+        if (StringUtils.isBlank(value)) {
+            return branchParameterDao.delete(branch, parameter);
+        } else {
+            return branchParameterDao.updateOrInsert(branch, parameter, value);
+        }
     }
 }

@@ -3,6 +3,7 @@ package net.panda.backend.dao.impl;
 import com.google.common.base.Optional;
 import net.panda.backend.dao.BranchParameterDao;
 import net.panda.backend.dao.model.TBranchParameter;
+import net.panda.core.model.Ack;
 import net.panda.dao.AbstractJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -50,6 +51,29 @@ public class BranchParameterJdbcDao extends AbstractJdbcDao implements BranchPar
                 SQL.BRANCH_PARAMETER_BY_BRANCH_AND_PARAMETER,
                 params("branch", branch).addValue("parameter", parameter),
                 branchParameterRowMapper
+        );
+    }
+
+    @Override
+    @Transactional
+    public Ack delete(int branch, int parameter) {
+        return Ack.one(
+                getNamedParameterJdbcTemplate().update(
+                        SQL.BRANCH_PARAMETER_DELETE,
+                        params("branch", branch).addValue("parameter", parameter)
+                )
+        );
+    }
+
+    @Override
+    @Transactional
+    public Ack updateOrInsert(int branch, int parameter, String value) {
+        delete(branch, parameter);
+        return Ack.one(
+                getNamedParameterJdbcTemplate().update(
+                        SQL.BRANCH_PARAMETER_INSERT,
+                        params("branch", branch).addValue("parameter", parameter).addValue("value", value)
+                )
         );
     }
 }

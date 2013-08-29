@@ -59,7 +59,7 @@ define(['render','jquery','common','ajax','dialog','dynamic'], function (render,
         },
         render: render.asTableTemplate(
             'pipeline-parameter-list',
-            function (config, parameters) {
+            function (config) {
                 $('.parameter-update').each(function (index, action) {
                     $(action).click(function () {
                         updateParameter(config.pipelineId, $(action).attr('data-parameter-id'))

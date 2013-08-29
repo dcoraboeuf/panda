@@ -35,4 +35,6 @@ public interface StructureService {
     List<BranchSummary> getBranches(int pipeline);
 
     List<BranchParameter> getBranchParameters(int branch);
+
+    Ack updateBranchParameter(int pipeline, int branch, int parameter, BranchParameterForm form);
 }

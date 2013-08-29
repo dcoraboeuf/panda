@@ -12,7 +12,29 @@
     <td class="description">
         {{data.def.defaultValue}}
     </td>
-    <td class="important">
-        {{data.value}}
+    <td width="250">
+        <span id="value-{{data.def.id}}" class="important">
+            {{data.value}}
+        </span>
+        {{#granted 'UPDATE'}}
+            <i
+                    id="action-{{data.def.id}}"
+                    data-parameter-id="{{data.def.id}}"
+                    class="branch-parameter-update icon-pencil action action-optional action-inline"></i>
+            <input
+                    id="input-{{data.def.id}}"
+                    data-parameter-id="{{data.def.id}}"
+                    class="branch-parameter-input hidden"
+                    value="{{data.value}}" />
+            <i
+                    id="apply-{{data.def.id}}"
+                    data-parameter-id="{{data.def.id}}"
+                    class="branch-parameter-apply icon-ok hidden action action-optional action-inline"></i>
+            <i
+                    id="cancel-{{data.def.id}}"
+                    data-parameter-id="{{data.def.id}}"
+                    class="branch-parameter-cancel icon-remove hidden action action-optional action-inline"></i>
+            <div id="error-{{data.def.id}}" class="alert alert-error hidden"></div>
+        {{/granted}}
     </td>
 </tr>

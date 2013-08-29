@@ -214,6 +214,16 @@ public class UIController extends AbstractUIController {
     }
 
     /**
+     * Updates a parameter for a branch
+     */
+    @RequestMapping(value = "/pipeline/{pipeline}/branch/{branch}/parameter/{parameter}", method = RequestMethod.PUT)
+    public
+    @ResponseBody
+    Ack pipelineBranchParameterList(@PathVariable int pipeline, @PathVariable int branch, @PathVariable int parameter, @RequestBody BranchParameterForm form) {
+        return structureService.updateBranchParameter(pipeline, branch, parameter, form);
+    }
+
+    /**
      * Gets the list of authorizations for a pipeline
      */
     @RequestMapping(value = "/pipeline/{pipeline}/authorization", method = RequestMethod.GET)
