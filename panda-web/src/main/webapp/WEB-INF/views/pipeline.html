@@ -9,7 +9,9 @@
 
     <input id="pipeline-id" type="hidden" value="${pipeline.id?c}" />
 
-    <@title value=pipeline.name description=pipeline.description />
+    <@title value=pipeline.name description=pipeline.description>
+        <@title_command id="pipeline-run" title=loc('pipeline.run') class="icon-play" />
+    </@title>
 
     <div class="row-fluid">
         <div class="span12">

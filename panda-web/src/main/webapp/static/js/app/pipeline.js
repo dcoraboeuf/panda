@@ -1,6 +1,27 @@
-define(['dialog', 'jquery', 'ajax', 'dynamic'], function(dialog, $, ajax, dynamic) {
+define(['dialog', 'jquery', 'ajax', 'dynamic', 'dialog'], function(dialog, $, ajax, dynamic, dialog) {
 
     var pipelineId = $('#pipeline-id').val();
+
+    function pipelineRun () {
+        ajax.get({
+            url: 'ui/pipeline/{0}/branch'.format(pipelineId),
+            successFn: function (branches) {
+                dialog.show({
+                    title: 'pipeline.run'.loc(),
+                    templateId: 'pipeline-run',
+                    initFn: function (dialog) {
+                        $.each(branches, function (index, branch) {
+                            dialog.form.find('#pipeline-branch').append(
+                                $('<option></option>')
+                                    .attr('value', branch.data.id)
+                                    .text(branch.data.name)
+                            )
+                        })
+                    }
+                })
+            }
+        })
+    }
 
     function pipelineParameterCreate () {
         dialog.show({
@@ -77,5 +98,6 @@ define(['dialog', 'jquery', 'ajax', 'dynamic'], function(dialog, $, ajax, dynami
     $('#pipeline-parameter-create').click(pipelineParameterCreate);
     $('#pipeline-branch-create').click(pipelineBranchCreate);
     $('#pipeline-authorization-create').click(pipelineAuthorizationCreate);
+    $('#pipeline-run').click(pipelineRun);
 
 })

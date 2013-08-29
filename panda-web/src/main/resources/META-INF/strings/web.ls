@@ -437,6 +437,18 @@ pipeline.stages.description
     en -> List of stages for this pipeline.
     fr -> Définition des niveaux pour ce pipeline.
 
+pipeline.run
+    en -> Run
+    fr -> Exécuter
+
+pipeline.run.branch
+    en -> Branch
+    fr -> Branche
+
+pipeline.run.branch.default
+    en -> (default)
+    fr -> (Défaut)
+
 [parameter]
 
 pipeline.parameter.create
