@@ -4,7 +4,31 @@
         <div class="controls">
             <select id="pipeline-branch">
                 <option value="0">{{loc 'pipeline.run.branch.default'}}</option>
+                {{#branches}}
+                    <option value="{{data.id}}">{{data.name}}</option>
+                {{/branches}}
             </select>
         </div>
+    </div>
+    <div class="control-group">
+        <table class="table">
+            <tbody>
+                {{#parameters}}
+                    <tr>
+                        <td>
+                            <b>{{data.name}}</b>
+                        </td>
+                        <td>
+                            {{#if data.overriddable}}
+                                <input id="run-parameter-{{data.id}}" value="{{data.defaultValue}}" />
+                            {{else}}
+                                <span>{{data.defaultValue}}</span>
+                                <i class="icon-lock"></i>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/parameters}}
+            </tbody>
+        </table>
     </div>
 </form>

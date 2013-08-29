@@ -6,16 +6,16 @@ define(['dialog', 'jquery', 'ajax', 'dynamic', 'dialog'], function(dialog, $, aj
         ajax.get({
             url: 'ui/pipeline/{0}/branch'.format(pipelineId),
             successFn: function (branches) {
-                dialog.show({
-                    title: 'pipeline.run'.loc(),
-                    templateId: 'pipeline-run',
-                    initFn: function (dialog) {
-                        $.each(branches, function (index, branch) {
-                            dialog.form.find('#pipeline-branch').append(
-                                $('<option></option>')
-                                    .attr('value', branch.data.id)
-                                    .text(branch.data.name)
-                            )
+                ajax.get({
+                    url: 'ui/pipeline/{0}/parameter'.format(pipelineId),
+                    successFn: function (parameters) {
+                        dialog.show({
+                            title: 'pipeline.run'.loc(),
+                            templateId: 'pipeline-run',
+                            data: {
+                                branches: branches,
+                                parameters: parameters
+                            }
                         })
                     }
                 })
