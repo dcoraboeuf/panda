@@ -64,13 +64,13 @@ public class UIControllerTest {
             Resource<PipelineSummary> p = list.get(0);
             assertEquals("P1", p.getData().getName());
             assertEquals("http://localhost/ui/pipeline/1", p.getLink("self").getHref());
-            assertEquals("http://localhost/pipeline/P1", p.getLink("gui").getHref());
+            assertEquals("http://localhost/pipeline/1", p.getLink("gui").getHref());
         }
         {
             Resource<PipelineSummary> p = list.get(1);
             assertEquals("P2", p.getData().getName());
             assertEquals("http://localhost/ui/pipeline/2", p.getLink("self").getHref());
-            assertEquals("http://localhost/pipeline/P2", p.getLink("gui").getHref());
+            assertEquals("http://localhost/pipeline/2", p.getLink("gui").getHref());
         }
     }
 
@@ -82,7 +82,7 @@ public class UIControllerTest {
         Resource<PipelineSummary> p = controller.pipelineGet(1);
         assertEquals("P1", p.getData().getName());
         assertEquals("http://localhost/ui/pipeline/1", p.getLink("self").getHref());
-        assertEquals("http://localhost/pipeline/P1", p.getLink("gui").getHref());
+        assertEquals("http://localhost/pipeline/1", p.getLink("gui").getHref());
     }
 
     @Test
@@ -109,7 +109,7 @@ public class UIControllerTest {
         assertEquals("P3", p.getData().getName());
         assertEquals("Pipeline 3", p.getData().getDescription());
         assertEquals("http://localhost/ui/pipeline/100", p.getLink("self").getHref());
-        assertEquals("http://localhost/pipeline/P3", p.getLink("gui").getHref());
+        assertEquals("http://localhost/pipeline/100", p.getLink("gui").getHref());
     }
 
 }
