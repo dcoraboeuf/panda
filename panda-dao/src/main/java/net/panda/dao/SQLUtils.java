@@ -9,12 +9,15 @@ import org.joda.time.LocalTime;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
 public final class SQLUtils {
 
     public static final String PARAMETER_SEPARATOR = "&&&&";
+    public static final String PARAMETER_ASSIGNEMENT = "=";
 
     private SQLUtils() {
     }
@@ -82,10 +85,26 @@ public final class SQLUtils {
                 }
                 String name = entry.getKey();
                 String value = entry.getValue();
-                s.append(name).append('=').append(value);
+                s.append(name).append(PARAMETER_ASSIGNEMENT).append(value);
                 index++;
             }
             return s.toString();
+        }
+    }
+
+    public static Map<String, String> parametersFromDB(ResultSet rs, String column) throws SQLException {
+        String dbValue = rs.getString(column);
+        if (StringUtils.isBlank(dbValue)) {
+            return Collections.emptyMap();
+        } else {
+            String[] parameters = StringUtils.split(dbValue, PARAMETER_SEPARATOR);
+            Map<String, String> result = new LinkedHashMap<>();
+            for (String parameter : parameters) {
+                String name = StringUtils.substringBefore(parameter, PARAMETER_ASSIGNEMENT);
+                String value = StringUtils.substringAfter(parameter, PARAMETER_ASSIGNEMENT);
+                result.put(name, value);
+            }
+            return result;
         }
     }
 }
